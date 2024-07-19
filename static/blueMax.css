@@ -1,0 +1,352 @@
+/* GENERAL */
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background-color: rgba(0, 0, 255, 0.084);
+    width: 100%;
+    height: 100%;
+    border: solid 3px blue;
+    box-sizing: border-box;
+    overflow: hidden;
+    
+
+        /* swampass mode */
+    filter: hue-rotate(-20deg);
+}
+
+#stylebuttons {
+    position: fixed;
+    z-index: 10000;
+    top: 90%;
+
+}
+
+.filter-off {
+    filter: hue-rotate(20deg);
+}
+
+.text-highlight-1 {
+    background-color: rgba(221, 255, 252, 0.288);
+    box-shadow: 0px 0px 5px rgba(81, 0, 255, 0.126);
+    box-shadow: 0px 0px 10px rgba(55, 0, 255, 0.303);
+    border-radius: 20px;
+    padding: 2px 20px;
+    font-weight:100;
+    
+    /* border: solid rgba(0, 255, 229, 0.451); */
+}
+
+.card-text {
+    font-style: italic;
+}
+
+.text-highlight-2 {
+    /* background-color: rgba(221, 255, 252, 0.077); */
+    /* box-shadow: 0px 0px 5px rgba(0, 255, 229, 0.126); */
+    /* box-shadow: 0px 0px 15px rgba(0, 217, 255, 0.303); */
+    /* border-radius: 20px; */
+    /* font-weight:300; */
+    margin: 2px;
+    
+    /* border: solid rgba(0, 255, 229, 0.451); */
+}
+
+
+h4 {
+    font-style: italic;
+}
+
+/* BACKGROUND IMAGES */
+
+
+
+.img-1-clear {
+    position: fixed;
+    filter: drop-shadow(200px 200px) drop-shadow(400px 400px) opacity(70%) grayscale(30%) blur(2px) hue-rotate(40deg);
+    background-image: url(/static/everglade-background.jpg);
+    background-repeat: no-repeat;
+    background-size:cover;
+    width: 100%;
+    height: 100%;
+    top: 0%;
+    z-index: -10000;
+}
+
+
+.img-2-clear {
+    position: fixed;
+    filter: drop-shadow(200px 200px) drop-shadow(400px 400px) opacity(35%) grayscale(30%) blur(2px) hue-rotate(40deg);
+    background-image: url(/static/everglades-background-2.png);
+    background-repeat: no-repeat;
+    background-size:cover;
+    width: 100%;
+    height: 100%;
+    top: 0%;
+    z-index: -10000;
+}
+
+
+.img-3-clear {
+    position: fixed;
+    filter: opacity(9%) grayscale(30%) hue-rotate(40deg);
+    transform: ;
+    background-image: url(/static/everglades-background-4.jpg);
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-attachment: fixed; 
+    /* background-size: 100% 150%; */
+    /* background-position-y: 60% ; */
+    width: 100%;
+    height: 100%;
+    top: 0%;
+    z-index: -10000;
+}
+
+
+/* NAVBAR STYLING */
+.horizontal-scrollable > .row {
+    white-space:nowrap;  
+    overflow-x:auto;
+}
+
+.horizontal-scrollable > .row > .card {
+    display: inline-block;  
+    float: none;  
+}
+
+.ul-filter{
+    /* backdrop-filter: blur(10px); */
+}
+
+#navbarContainer {
+    background-color: rgba(149, 0, 255, 0.076);
+    border: groove 1px rgb(4, 0, 255);
+    border-radius: 50px;
+    box-shadow: 5px 5px rgba(0, 0, 255, 0.376);
+    padding-bottom: 0%;
+    margin-top: .5%;
+    backdrop-filter: blur(10px);
+}
+
+
+.nav-name-color {
+    color: blue;
+    text-shadow: 2px 2px 12px rgba(255, 0, 255, .8);
+    text-shadow: 4px 4px 12px rgba(255, 0, 255, .8);
+    text-shadow: 6px 6px 12px rgba(0, 242, 255, .8);
+    text-shadow: 8px 8px 12px rgba(0, 255, 208, .8);
+}
+
+.nav-text-color {
+    color: blue;
+    /* color: rgb(137, 0, 112); */
+    text-shadow: 2px 2px 12px rgba(255, 0, 255, .8);
+    text-shadow: 4px 4px 12px rgba(255, 0, 255, .8);
+    text-shadow: 6px 6px 12px rgba(0, 242, 255, .8);
+    text-shadow: 8px 8px 12px rgba(0, 255, 208, .8);
+}
+
+/* WORKS DROPDOWN STYLING */
+#works-index-container {
+    
+}
+
+#worksDropdownContainer {
+    display: block;
+    position: absolute;
+    padding: 20px;
+    /* width: 60%; */
+    /* margin-top: 0; */
+    margin-left: 10%;
+    margin-right: 10%;
+    /* background-color: rgba(191, 0, 255, 0.033);
+    border: solid 2px blue; */
+    /* border-radius: 15%; */
+}
+
+#card-container{
+}
+
+.works-card-image {
+    border-bottom-right-radius: 10%;
+    border-bottom-left-radius: 10%;
+    filter: opacity(80%);
+}
+
+.works-card {
+    background-color: rgba(191, 0, 255, 0.036);
+    border: solid 1px blue;
+    border-radius: 10%;
+    /* border-radius: 20%; */
+    box-sizing: border-box;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+}
+
+.card-nav-img-size {
+    width: 100%;
+    height: 20vw;
+    object-fit: cover;
+}
+
+
+/* SHOW WORK AREA STYLING */
+#showWorkArea {
+    width: 80%;
+    margin: auto;
+    height: 85%;
+    /* overflow: scroll; */
+}
+
+.show-work-flex-container {
+    height: 100%;
+}
+
+/* INDIVIDUAL WORKS STYLING */
+.show-work-container {
+    margin-top: 3%;
+    margin-left: 3%;
+    margin-right: 3%;
+    border-radius: 3%;
+    height: 100%;
+    backdrop-filter: blur(20px);
+}
+
+.show-work-img {
+    border: solid 1px black;
+    border-radius: 50px;
+    box-shadow: 
+        2px 2px rgba(0, 0, 255, 0.447),
+        4px 4px rgba(0, 128, 255, 0.492);
+    width: 80%;
+    object-fit:cover;
+    display: block;
+    margin: auto;
+}
+
+.show-work-img-container {
+    background-color: rgba(191, 0, 255, 0.036);
+    border-radius: 5%;
+    border: solid 1px blue;
+    margin-left: 3%;
+    height: 100%;
+    width: 50%;
+    overflow: scroll;
+}
+
+
+.work-text-container {
+    background-color: rgba(191, 0, 255, 0.036);
+    border-radius: 5%;
+    border: solid 1px blue;
+    height: 100%;
+    width: 50%;
+    overflow: scroll;
+}
+
+
+/* SOUNDCLOUD PLAYER STYLING */
+.soundcloud-container
+{
+    width:370px; /* clipping right side of page */
+    height:80px; /* clipping top side of page */
+    overflow:hidden;     /* if you don't want a scrollbar, set to hidden */
+    overflow-x:hidden;   /* hides horizontal scrollbar on newer browsers */
+}
+
+.soundcloud-player
+{
+    width:600px;       /* set this to approximate width of entire page you're embedding */
+    height:60px;      /* determines where the bottom of the page cuts off */
+    margin-left:-130px; /* clipping left side of page */
+    overflow:hidden;
+}
+
+
+
+
+
+
+
+
+
+
+
+                            /*                              Z-INDEX ARRANGEMENT                                               */
+canvas {
+    z-index: 0;
+}
+#works-index-container {
+    z-index: 10000;
+}
+#navbarContainer {
+    z-index: 1000;
+}
+.nav-item { 
+    z-index: 100;
+}
+#works-index-container {
+    z-index: 10000;
+}
+.show-work-img {
+    z-index: 100;
+}
+#showWorkArea {
+    z-index: 100;
+}
+.work-text {
+    z-index: 100;
+}
+.show-work-img-container {
+    z-index: 10;
+}
+#worksDropdownContainer {
+    z-index: 1000 !important;
+}
+
+
+                            /*                              FLUID SIM                                                           */
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
+
+body{
+}
+
+canvas{
+    --dsBase: 9px;
+    display: block;
+    position: absolute;
+    
+    width: 100%;
+    left: -100px;
+
+    filter:
+             /*V1  */
+        /* drop-shadow(10px 10px rgb(111, 255, 185)) 
+        drop-shadow(20px 20px rgb(224, 201, 255)) 
+        drop-shadow(30px 30px rgb(203, 255, 237))
+        drop-shadow(40px 40px rgb(111, 255, 233)) 
+        drop-shadow(50px 50px rgb(222, 201, 255)) 
+        drop-shadow(60px 60px rgb(203, 255, 237))
+        contrast(100%)
+        blur(1.5px) 
+        opacity(50%); */
+        
+        drop-shadow(calc(var(--dsBase) * 1) calc(var(--dsBase) * 1) rgb(255, 222, 60)) 
+        drop-shadow(calc(var(--dsBase) * 2) calc(var(--dsBase) * 2) rgb(255, 213, 0)) 
+        drop-shadow(calc(var(--dsBase) * 3) calc(var(--dsBase) * 3) rgb(255, 25, 25))
+        drop-shadow(calc(var(--dsBase) * 4) calc(var(--dsBase) * 4) rgb(255, 161, 98)) 
+        drop-shadow(calc(var(--dsBase) * 5) calc(var(--dsBase) * 5) rgb(237, 255, 34))
+        /* drop-shadow(calc(var(--dsBase) * 6) calc(var(--dsBase) * 6) rgb(99, 255, 201))  */
+        hue-rotate(195deg)
+        /* contrast(500%) */
+        blur(5px)
+        opacity(40%);
+
+        /* hue-rotate(40deg); */
+        
+    /* overflow: hidden; */
+    /* border: 2px solid white; */
+}
