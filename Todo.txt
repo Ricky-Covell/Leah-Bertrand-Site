@@ -1,7 +1,0 @@
-base.html
-landing.html
-about.html
-works-index.html
-show-work.html
-performances-index.html
-show-performance.html
