@@ -69,14 +69,16 @@ thing("Yo.");
     These are the variable definitions for the values that will be used 
     throughout the rest of the script.
     */
-    let vwidth = Math.ceil(Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)/100)*100
-    let vheight = Math.ceil(Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)/100)*100
+    let resNum = 100
+
+    let vwidth = Math.ceil(Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)/100)*resNum 
+    let vheight = Math.ceil(Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)/100)*resNum
     var canvas_width = vwidth; //Needs to be a multiple of the resolution value below.
     var canvas_height = vheight ; //This too.
     
-    var resolution = 50; //Width and height of each cell in the grid.
+    var resolution = resNum; //Width and height of each cell in the grid.
     
-    var pen_size = 100; //Radius around the mouse cursor coordinates to reach when stirring
+    var pen_size = 50; //Radius around the mouse cursor coordinates to reach when stirring
 
     var num_cols = canvas_width / resolution; //This value is the number of columns in the grid.
     var num_rows = canvas_height / resolution; //This is number of rows.
@@ -407,7 +409,7 @@ thing("Yo.");
             // GREENISH BLACK
         // ctx.strokeStyle = "#fgb833";
 
-            // Green
+            // ?
         ctx.strokeStyle = "#FFEB9A";
 
 

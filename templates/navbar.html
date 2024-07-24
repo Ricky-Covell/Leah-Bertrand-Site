@@ -1,10 +1,10 @@
-{% block title %}{% endblock %}
+
 
 {% block content %}
 <div class="container" id="navbarContainer">
         <ul class="nav nav-pills nav-fill ul-filter">
                         <!-- NAME -->
-            <li class="nav-item active">
+            <li class="nav-item active" id="nav-leah">
                 <a href="/" class="nav-link fs-2 nav-name-color" id="worksNavItem">Leah Bertrand</a>
             </li>
                         <!-- WORKS -->            
@@ -12,12 +12,12 @@
                 <a href="/#" class="nav-link fs-3 nav-text-color" id="worksNavItem">Works</a>
             </li>
                         <!-- WORKS -->            
-            <li class="nav-item">
+            <li class="nav-item" id="performancesDropdownHover">
                 <a href="/#" class="nav-link fs-3 nav-text-color" id="performanceNavItem">Performances</a>
             </li>
                         <!-- ABOUT -->
             <li class="nav-item">
-                <a href="/about" class="nav-link fs-3 nav-text-color">About</a> 
+                <a href="/about" class="nav-link fs-3 nav-text-color" id="navAbout">About</a> 
             </li>
         </ul>
     </div>
@@ -25,16 +25,35 @@
 
     <!-- WORKS DROPDOWN --> 
     <div class="d-none worksDropdownTest" id="worksDropdownContainer">
-        <div class="row flex-row flex-nowrap overflow-scroll" id="works-index-container">
+        <div class="row flex-row" id="works-index-container">
         {% for work in works %}
         <div class="col-4">
-            <div class="card text-center works-card">
+            <div class="text-center works-card">
                 <!-- <div class="card-body"> -->
                     <div id="card-container">
                     <img class="card-img-top card-nav-img-size img-fluid works-card-image {{work.img_filter}}" src="{{work.image1}}" alt="nope">
-                    <p class="card-text text-highlight-2 ">{{ work.medium }}, {{ work.year }}</p>
-                    <h5 class="card-title text-highlight-2">{{ work.title }}</h3>
-                    <a class="stretched-link card-link" href="/api/work/{{ work.id }}" data-workID="{{ work.id }}"></a>
+                    <h6 class="card-text text-highlight-2">{{ work.medium }}, {{ work.year }}</h5>
+                    <h5 class="card-title ">{{ work.title }}</h3>
+                    <a class="stretched-link card-link works-card-link" href="/api/work/{{ work.id }}" data-workID="{{ work.id }}"></a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+    </div>
+
+    <!-- PERFORMANCES DROPDOWN -->
+    <div class="d-none performancesDropdownTest" id="performancesDropdownContainer">
+        <div class="row flex-row" id="performances-index-container">
+        {% for performance in performances %}
+        <div class="col-4">
+            <div class="text-center works-card">
+                <!-- <div class="card-body"> -->
+                    <div id="card-container">
+                    <img class="card-img-top card-nav-img-size img-fluid works-card-image {{performance.img_filter}}" src="{{performance.image1}}" alt="nope">
+                    <h6 class="card-text text-highlight-2">{{ performance.medium }}, {{ performance.year }}</h5>
+                    <h5 class="card-title ">{{ performance.title }}</h3>
+                    <a class="stretched-link card-link performances-card-link" href="/api/work/{{ performance.id }}" data-performanceID="{{ performance.id }}"></a>
                 </div>
             </div>
         </div>
@@ -42,5 +61,4 @@
         </div>
     </div>
 </div>     
-{% include 'works-index.html' %}
 {% endblock %}
