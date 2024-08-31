@@ -123,7 +123,12 @@ class Performance(db.Model):
         primary_key=True,
     )
 
+    title = db.Column(
+        db.Text,
+        nullable=False,
+    )
 
+<<<<<<< HEAD
 class Admin(db.Model):
     """User in the system."""
 
@@ -135,15 +140,23 @@ class Admin(db.Model):
     )
 
     username = db.Column(
+=======
+    medium = db.Column(
+>>>>>>> 102193226cbc6fcf38618b86a7504488411efd44
         db.Text,
         nullable=False,
     )
 
+<<<<<<< HEAD
     password = db.Column(
+=======
+    year = db.Column(
+>>>>>>> 102193226cbc6fcf38618b86a7504488411efd44
         db.Text,
         nullable=False,
     )
 
+<<<<<<< HEAD
     @classmethod
     def signup(cls, username, password):
         """Sign up user.
@@ -173,3 +186,130 @@ class Admin(db.Model):
                 return admin
 
         return False
+=======
+    description1 = db.Column(
+        db.Text,
+        nullable=False,
+    )
+
+    description2 = db.Column(
+        db.Text,
+        nullable=True,
+    )
+
+    image1 = db.Column(
+        db.Text,
+        nullable=False,
+    )
+
+    image2 = db.Column(
+        db.Text,
+        nullable=True,
+    )
+
+    image3 = db.Column(
+        db.Text,
+        nullable=True,
+    )
+
+    image4 = db.Column(
+        db.Text,
+        nullable=True,
+    )
+
+    soundcloud_header = db.Column(
+    db.Text,
+    nullable=True,
+    )
+
+    soundcloud_track_id = db.Column(
+    db.Text,
+    nullable=True,
+    )
+
+    downdload_link = db.Column(
+    db.Text,
+    nullable=True,
+    )
+
+    img_filter = db.Column(
+        db.Text,
+        nullable=True,
+    )
+
+    def serialize(self):
+        ''''''
+
+        return {
+            'id': self.id,
+            'medium': self.medium,
+            'year': self.year,
+            'description1': self.description1,
+            'description2': self.description2,
+            'image1': self.image1,
+            'image2': self.image2,
+            'image3': self.image3,
+            'image4': self.image4,
+            'soundcloud_header': self.soundcloud_header,
+            'soundcloud_track_id': self.soundcloud_track_id,
+            'downdload_link': self.downdload_link,
+            'img_filter': self.img_filter,
+        }
+
+
+
+
+
+
+
+                                            # # # # # # # # # # # # # # # # FUTURE UPDATES # # # # # # # # # # # # # # # # # # # # 
+# class Admin(db.Model):
+#     """User in the system."""
+
+#     __tablename__ = 'admin'
+
+#     id = db.Column(
+#         db.Integer,
+#         primary_key=True,
+#     )
+
+#     username = db.Column(
+#         db.Text,
+#         nullable=False,
+#     )
+
+#     password = db.Column(
+#         db.Text,
+#         nullable=False,
+#     )
+
+#     @classmethod
+#     def signup(cls, username, password):
+#         """Sign up user.
+
+#         Hashes password and adds user to system.
+#         """
+
+#         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+
+#         admin = Admin(
+#             username=username,
+#             password=hashed_pwd,
+#         )
+
+#         db.session.add(admin)
+#         return admin
+
+#     @classmethod
+#     def authenticate(cls, username, password):
+#         """ """
+
+#         admin = cls.query.filter_by(username=username).first()
+
+#         if admin:
+#             is_auth = bcrypt.check_password_hash(admin.password, password)
+#             if is_auth:
+#                 return admin
+
+#         return False
+>>>>>>> 102193226cbc6fcf38618b86a7504488411efd44
