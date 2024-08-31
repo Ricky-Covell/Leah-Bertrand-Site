@@ -1,3 +1,25 @@
+{% extends 'base.html' %}
 {% include 'navbar.html' %}
+{% include 'show-performance.html' %}
+{% include 'show-work.html' %}
+{% include 'about.html' %}
 
-{% block title %}Landing{% endblock %}
+{% block content %}
+<div id="stylesheet">
+    <link rel="stylesheet" href="/static/blueMax.css">
+</div>
+
+<p id="hintText">click and drag!</p>
+
+
+<canvas id="c"></canvas>
+<script type="text/javascript" src="/static/js/fluidsim.js"></script>
+
+
+<div class="img-1-clear" id="background-img-1 bg-img-all"></div>
+<div class="img-2-clear" id="background-img-2 bg-img-all"></div>
+<!-- <div class="img-3-clear" id="background-img-3 bg-img-all"></div> -->
+
+
+<script type="text/javascript" src="/static/js/navigation.js"></script>
+{% endblock %}

@@ -92,7 +92,7 @@ class Work(db.Model):
     )
 
     def serialize(self):
-        '''Serialized Cupcake to dict for JSON'''
+        ''''''
 
         return {
             'id': self.id,
@@ -124,3 +124,52 @@ class Performance(db.Model):
     )
 
 
+class Admin(db.Model):
+    """User in the system."""
+
+    __tablename__ = 'admin'
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
+
+    username = db.Column(
+        db.Text,
+        nullable=False,
+    )
+
+    password = db.Column(
+        db.Text,
+        nullable=False,
+    )
+
+    @classmethod
+    def signup(cls, username, password):
+        """Sign up user.
+
+        Hashes password and adds user to system.
+        """
+
+        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+
+        admin = Admin(
+            username=username,
+            password=hashed_pwd,
+        )
+
+        db.session.add(admin)
+        return admin
+
+    @classmethod
+    def authenticate(cls, username, password):
+        """ """
+
+        admin = cls.query.filter_by(username=username).first()
+
+        if admin:
+            is_auth = bcrypt.check_password_hash(admin.password, password)
+            if is_auth:
+                return admin
+
+        return False
