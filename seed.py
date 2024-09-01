@@ -1,9 +1,5 @@
-from app import app
 from models import db, Work, Performance
 
-
-db.drop_all()
-db.create_all()
 
 def seed_database():
     work1 = Work(
