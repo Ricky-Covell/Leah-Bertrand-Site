@@ -1,4 +1,5 @@
 import os
+import seed_database from seed
 
 from flask import Flask, render_template, jsonify, request, flash, redirect, session, url_for, g
 from flask_debugtoolbar import DebugToolbarExtension
@@ -32,6 +33,8 @@ connect_db(app)
 
 db.drop_all()
 db.create_all()
+
+seed_database()
 
 # # # # # # # # # # # # # # # # GENERAL ROUTES # # # # # # # # # # # # # # # # # # # # 
 @app.route('/', methods=["GET"])
