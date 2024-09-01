@@ -128,7 +128,7 @@ class Performance(db.Model):
         nullable=False,
     )
 
-<<<<<<< HEAD
+
 class Admin(db.Model):
     """User in the system."""
 
@@ -140,23 +140,18 @@ class Admin(db.Model):
     )
 
     username = db.Column(
-=======
     medium = db.Column(
->>>>>>> 102193226cbc6fcf38618b86a7504488411efd44
         db.Text,
         nullable=False,
     )
-
-<<<<<<< HEAD
+        
     password = db.Column(
-=======
     year = db.Column(
->>>>>>> 102193226cbc6fcf38618b86a7504488411efd44
         db.Text,
         nullable=False,
     )
 
-<<<<<<< HEAD
+        
     @classmethod
     def signup(cls, username, password):
         """Sign up user.
@@ -186,7 +181,7 @@ class Admin(db.Model):
                 return admin
 
         return False
-=======
+
     description1 = db.Column(
         db.Text,
         nullable=False,
