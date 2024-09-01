@@ -307,4 +307,3 @@ class Admin(db.Model):
 #                 return admin
 
 #         return False
->>>>>>> 102193226cbc6fcf38618b86a7504488411efd44
