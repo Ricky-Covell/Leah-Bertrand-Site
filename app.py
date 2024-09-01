@@ -26,12 +26,12 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 
 toolbar = DebugToolbarExtension(app)
 
-db.drop_all()
-db.create_all()
 
 app.app_context().push()
 connect_db(app)
 
+db.drop_all()
+db.create_all()
 
 # # # # # # # # # # # # # # # # GENERAL ROUTES # # # # # # # # # # # # # # # # # # # # 
 @app.route('/', methods=["GET"])
