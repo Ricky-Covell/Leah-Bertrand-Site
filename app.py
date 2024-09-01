@@ -112,8 +112,6 @@ performance1 = Performance(
         soundcloud_track_id='415367730',
         downdload_link='',
         img_filter='filter-off'
-        img_filter='filter-off'
-        img_filter='filter-off'
     )
     
 db.session.add_all([work1, work2, work3, work4, performance1])
