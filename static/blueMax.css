@@ -7,7 +7,7 @@
     --containerBackgroundColor: rgba(200, 196, 255, 0.08);
     --containerBorderColor: rgba(22, 0, 108, 0.568);
     --borderType: solid;
-    --backdropBlur: blur(15px);
+    --backdropBlur: blur(6px);
     --inset1: groove 5px rgba(39, 48, 83, 0.2); 
     --inset1sm: groove 4px rgba(39, 48, 83, 0.2); 
 }
@@ -139,7 +139,7 @@ h4, h6 {
 
 .img-1-clear {
     position: fixed;
-    filter: drop-shadow(200px 200px) drop-shadow(400px 400px) opacity(50%) grayscale(80%) contrast(100%) brightness(150%) blur(4px) hue-rotate(10deg) invert(100%);
+    filter: drop-shadow(200px 200px) drop-shadow(400px 400px) opacity(50%) grayscale(60%) contrast(100%) brightness(250%) blur(4px) hue-rotate(10deg) invert(100%);
     background-image: url(/static/everglade-background.jpg);
     background-repeat: no-repeat;
     background-size:cover;
@@ -154,7 +154,7 @@ h4, h6 {
 
 .img-2-clear {
     position: fixed;
-    filter: drop-shadow(200px 200px) drop-shadow(400px 400px) opacity(25%) grayscale(80%) contrast(100%) brightness(150%) blur(4px) hue-rotate(10deg) invert(100%);
+    filter: drop-shadow(200px 200px) drop-shadow(400px 400px) opacity(25%) grayscale(80%) contrast(160%) brightness(150%) blur(4px) hue-rotate(10deg) invert(100%);
     background-image: url(/static/everglades-background-2.png);
     background-repeat: no-repeat;
     background-size:cover;
@@ -221,7 +221,7 @@ h4, h6 {
     width: 80%;
     margin-left: 10%;
     margin-right: 10%;
-    margin-top: 2%;
+    margin-top: 2.5%;
     background-color: var(--containerBackgroundColor);
 }
 
@@ -239,7 +239,7 @@ h4, h6 {
 
 .works-card-image {
     border-radius: 0%;
-    filter: opacity(75%);    
+    filter: opacity(80%);    
 }
 
 
@@ -248,7 +248,9 @@ h4, h6 {
     /* border: groove 8px rgba(64, 78, 136, 0.2); */
     /* border: groove 4px rgba(129, 145, 209, 0.3); */
     border: var(--inset1sm);
-    margin: 5%;
+    margin-top: 13%;
+    margin-left: 5%;
+    margin-right: 5%;
     border-radius: 0%;
     box-sizing: border-box;
     /* overflow: hidden; */
@@ -291,7 +293,7 @@ h4, h6 {
     width: 80%;
     margin-left: 10%;
     margin-right: 10%;
-    margin-top: 2%;
+    margin-top: 2.5%;
     background-color: var(--containerBackgroundColor);
     backdrop-filter: var(--backdropBlur);
     border: var(--inset1);
@@ -313,7 +315,7 @@ h4, h6 {
     margin-right: auto; 
     width: 80%;
     height: 84%;
-    margin-top: 2%;
+    margin-top: 2.5%;
     overflow:hidden;
 }  
 
@@ -332,7 +334,7 @@ h4, h6 {
     margin-right: auto; 
     width: 80%;
     height: 84%;
-    margin-top: 2%;
+    margin-top: 2.5%;
     overflow:hidden;
 }
 
