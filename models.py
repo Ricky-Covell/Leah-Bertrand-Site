@@ -214,52 +214,136 @@ class Performance(db.Model):
 
 
                                             # # # # # # # # # # # # # # # # FUTURE UPDATES # # # # # # # # # # # # # # # # # # # # 
-# class Admin(db.Model):
-#     """User in the system."""
+class Admin(db.Model):
+    """User in the system."""
 
-#     __tablename__ = 'admin'
+    __tablename__ = 'admin'
 
-#     id = db.Column(
-#         db.Integer,
-#         primary_key=True,
-#     )
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
 
-#     username = db.Column(
-#         db.Text,
-#         nullable=False,
-#     )
+    username = db.Column(
+        db.Text,
+        nullable=False,
+    )
 
-#     password = db.Column(
-#         db.Text,
-#         nullable=False,
-#     )
+    password = db.Column(
+        db.Text,
+        nullable=False,
+    )
 
-#     @classmethod
-#     def signup(cls, username, password):
-#         """Sign up user.
+    @classmethod
+    def signup(cls, username, password):
+        """Sign up user.
 
-#         Hashes password and adds user to system.
-#         """
+        Hashes password and adds user to system.
+        """
 
-#         hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
+        hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
 
-#         admin = Admin(
-#             username=username,
-#             password=hashed_pwd,
-#         )
+        admin = Admin(
+            username=username,
+            password=hashed_pwd,
+        )
 
-#         db.session.add(admin)
-#         return admin
+        db.session.add(admin)
+        return admin
 
-#     @classmethod
-#     def authenticate(cls, username, password):
-#         """ """
+    @classmethod
+    def authenticate(cls, username, password):
+        """ """
 
-#         admin = cls.query.filter_by(username=username).first()
+        admin = cls.query.filter_by(username=username).first()
 
-#         if admin:
-#             is_auth = bcrypt.check_password_hash(admin.password, password)
-#             if is_auth:
-#                 return admin
+        if admin:
+            is_auth = bcrypt.check_password_hash(admin.password, password)
+            if is_auth:
+                return admin
 
-#         return False
+        return False
+    
+
+# # # # # # # # # # # # # # # # # # # # # APPEARANCE # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #     
+
+class Appearance(db.Model):
+    '''Appearances values'''
+    
+    __tablename__ = 'appearance'
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
+
+    border_color = db.Column(
+        db.Text,
+        nullable=False
+    )
+    
+    background_color = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    background_blur = db.Column(
+        db.Integer,
+        nullable=False
+    )
+    
+    inset_color = db.Column(
+        db.Text,
+        nullable=False
+    )
+    
+    fluid_color_1 = db.Column(
+        db.Text,
+        nullable=False
+    )
+    
+    fluid_color_2 = db.Column(
+        db.Text,
+        nullable=False
+    )
+    
+    fluid_color_3 = db.Column(
+        db.Text,
+        nullable=False
+    )
+    
+    fluid_color_4 = db.Column(
+        db.Text,
+        nullable=False
+    )
+    
+    fluid_color_5 = db.Column(
+        db.Text,
+        nullable=False
+    )
+    
+    fluid_hue_rotate = db.Column(
+        db.Integer,
+        nullable=False
+    )
+    
+    fluid_grayscale = db.Column(
+        db.Integer,
+        nullable=False
+    )
+    
+    fluid_brightness = db.Column(
+        db.Integer,
+        nullable=False
+    )
+    
+    fluid_blur = db.Column(
+        db.Integer,
+        nullable=False
+    )
+    
+    fluid_opacity = db.Column(
+        db.Integer,
+        nullable=False
+    )
+    

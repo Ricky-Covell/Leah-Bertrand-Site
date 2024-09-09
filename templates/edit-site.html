@@ -1,4 +1,278 @@
-{% extends 'landing.html' %}
-<!-- {% include 'landing.html' %} -->
+{% extends 'base.html' %}
 
-<!-- <script type="text/javascript" src="/static/js/navigation.js"></script> -->
+{% block content %}
+            <!-- // // // // // // // // // EDIT PANEL // // // // // // // // //  -->
+<div id="editPanelContainer">
+    <div class="row justify-content-md-center" id="editFormContainer">
+        <div class="col-md-7 col-lg-5">
+
+          <div id="editModeButtonsContainer">
+            <input type="radio" name="edit-mode" id="editMode1" value="fluid" checked="checked">
+            <label for="editMode1">Fluid</label>
+            <input type="radio" name="edit-mode" id="editMode2" value="windows">
+            <label for="editMode1">Windows</label>
+          </div>
+          
+    
+          <form method="POST" id="editForm">
+            {{ form.hidden_tag() }}
+    
+            {% for field in form if field.widget.input_type != 'hidden' %}
+              {% for error in field.errors %}
+                <span class="text-danger">{{ error }}</span>
+              {% endfor %}
+              <span>
+                <p class='edit-page-label' id="{{field.label.text}}_label">{{field.label.text}}</p>
+                {{ field(class="form-control", id=field.label.text, text=field.label.text) }}
+            </span>
+            {% endfor %}
+    
+            <div>
+                <button class="btn btn-primary btn-block btn-lg" id="submitChangesButton">  SAVE CHANGES  </button>
+            </div>
+          </form>
+        </div>
+      </div>
+</div>             
+
+
+
+
+            <!-- // // // // // // // // // SITE PAGE // // // // // // // // //  -->
+<div id="sitePageContainer">
+    
+
+
+
+<div id="stylesheet"></div>
+    <link rel="stylesheet" href="/static/edit-page.css">
+</div>
+
+
+
+<canvas id="c"></canvas>
+<script type="text/javascript" src="/static/js/fluidsim.js"></script>
+
+
+<div class="img-1-clear" id="background-img-1 bg-img-all"></div>
+<div class="img-2-clear" id="background-img-2 bg-img-all"></div>
+<!-- <div class="img-3-clear" id="background-img-3 bg-img-all"></div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- PROBLEM: how to get {{ appearances }} to register in a seperate js file without async requests? -->
+
+<!-- // // // // // // // // // SCRIPT // // // // // // // // //  --> 
+<script type="text/javascript">
+    let editMode1 = document.getElementById('editMode1');
+    let editMode2 = document.getElementById('editMode2');
+
+
+    let valuesObj = {
+        borderColor: '{{ appearances[0].border_color }}',
+        backgroundColor: '{{ appearances[0].background_color }}',
+        backgroundBlur: '{{ appearances[0].background_blur }}',
+        insetColor: '{{ appearances[0].inset_color }}',
+        fluidColor1: '{{ appearances[0].fluid_color_1 }}',
+        fluidColor2: '{{ appearances[0].fluid_color_2 }}',
+        fluidColor3: '{{ appearances[0].fluid_color_3 }}',
+        fluidColor4: '{{ appearances[0].fluid_color_4 }}',
+        fluidColor5: '{{ appearances[0].fluid_color_5 }}',
+        fluidHueRotate: '{{ appearances[0].fluid_hue_rotate }}',
+        fluidGrayscale: '{{ appearances[0].fluid_grayscale }}',
+        fluidBrightness: '{{ appearances[0].fluid_brightness }}',
+        fluidBlur: '{{ appearances[0].fluid_blur }}',
+        fluidOpacity: '{{ appearances[0].fluid_opacity }}'
+    }
+    
+    let windowParamsArray = {
+        borderColorParameter: document.getElementById('border_color'),
+        backgroundColorParameter: document.getElementById('background_color'),
+        backgroundBlurParameter: document.getElementById('background_blur'),
+        insetColorParameter: document.getElementById('inset_color')
+    }
+
+    let windowsParamsText = {
+        borderColorParameter: document.getElementById('border_color_label'),
+        backgroundColorParameter: document.getElementById('background_color_label'),
+        backgroundBlurParameter: document.getElementById('background_blur_label'),
+        insetColorParameter: document.getElementById('inset_color_label')
+    }
+
+    
+    let fluidParamsArray = {
+        fluidColor1Parameter: document.getElementById('fluid_color_1'),
+        fluidColor2Parameter: document.getElementById('fluid_color_2'),
+        fluidColor3Parameter: document.getElementById('fluid_color_3'),
+        fluidColor4Parameter: document.getElementById('fluid_color_4'),
+        fluidColor5Parameter: document.getElementById('fluid_color_5'),
+        fluidHueRotateParameter: document.getElementById('fluid_hue_rotate'),
+        fluidGrayscaleParameter: document.getElementById('fluid_grayscale'),
+        fluidBrightnessParameter: document.getElementById('fluid_brightness'),
+        fluidBlurParameter: document.getElementById('fluid_blur'),
+        fluidOpacityParameter: document.getElementById('fluid_opacity'),
+    }
+
+
+    let fluidParamsText = {
+        fluidColor1Parameter: document.getElementById('fluid_color_1_label'),
+        fluidColor2Parameter: document.getElementById('fluid_color_2_label'),
+        fluidColor3Parameter: document.getElementById('fluid_color_3_label'),
+        fluidColor4Parameter: document.getElementById('fluid_color_4_label'),
+        fluidColor5Parameter: document.getElementById('fluid_color_5_label'),
+        fluidHueRotateParameter: document.getElementById('fluid_hue_rotate_label'),
+        fluidGrayscaleParameter: document.getElementById('fluid_grayscale_label'),
+        fluidBrightnessParameter: document.getElementById('fluid_brightness_label'),
+        fluidBlurParameter: document.getElementById('fluid_blur_label'),
+        fluidOpacityParameter: document.getElementById('fluid_opacity_label'),
+    }   
+    
+    let fluidSim = document.getElementById('c')
+    
+
+    // EDITING MODE LISTENERS
+    editMode1.addEventListener('click', (evt) => {
+          for (let key in fluidParamsArray) {
+            fluidParamsArray[key].classList.add('d-block');
+            fluidParamsArray[key].classList.remove('d-none');
+            fluidParamsText[key].classList.add('d-block');
+            fluidParamsText[key].classList.remove('d-none');
+          }
+
+          for (let key in windowParamsArray) {
+            windowParamsArray[key].classList.add('d-none');
+            windowParamsArray[key].classList.remove('d-block');
+            windowsParamsText[key].classList.add('d-none');
+            windowsParamsText[key].classList.remove('d-block');
+          }
+    })
+
+    editMode2.addEventListener('click', (evt) => {
+          for (let key in fluidParamsArray) {
+            fluidParamsArray[key].classList.add('d-none');
+            fluidParamsArray[key].classList.remove('d-block');
+            fluidParamsText[key].classList.add('d-none');
+            fluidParamsText[key].classList.remove('d-block');
+          }
+
+          for (let key in windowParamsArray) {
+            windowParamsArray[key].classList.add('d-block');
+            windowParamsArray[key].classList.remove('d-none');
+            windowsParamsText[key].classList.add('d-block');
+            windowsParamsText[key].classList.remove('d-none');
+          }
+    })
+
+
+
+    // INITIALIZES SLIDERS TO VALUES STORED IN DATABASE
+    function slidersInit(){
+        for (let key in fluidParamsArray){
+        let param = fluidParamsArray[key];
+        let valuesKey = `${key}`.replace('Parameter', '');
+        
+        param.value = valuesObj[valuesKey];
+        }
+
+        for (let key in fluidParamsArray) {
+          fluidParamsArray[key].classList.add('d-block');
+          fluidParamsArray[key].classList.remove('d-none');
+          fluidParamsText[key].classList.add('d-block');
+          fluidParamsText[key].classList.remove('d-none');
+        }
+        for (let key in windowParamsArray) {
+          windowParamsArray[key].classList.add('d-none');
+          windowParamsArray[key].classList.remove('d-block');
+          windowsParamsText[key].classList.add('d-none');
+          windowsParamsText[key].classList.remove('d-block');
+        }
+    }
+
+    // ADDS 'CHANGE' EVENT LISTENER TO EACH FLUID PARAM AND UPDATES FLUIDSIM FILTER VALUES
+    for (let key in fluidParamsArray){
+        let param = fluidParamsArray[key];
+
+        param.addEventListener('change', (evt) => {
+            console.log(`Parameter: ${param.id}       Value: ${param.value}`);
+            
+            let valuesKey = `${key}`.replace('Parameter', '');
+            valuesObj[valuesKey] = param.value;
+
+            fluidSim.style.filter=`
+            drop-shadow(9px 9px ${valuesObj.fluidColor1}) 
+            drop-shadow(27px 18px ${valuesObj.fluidColor2}) 
+            drop-shadow(-9px 27px ${valuesObj.fluidColor3}) 
+            drop-shadow(-27px 36px ${valuesObj.fluidColor4}) 
+            drop-shadow(0px 45px ${valuesObj.fluidColor5}) 
+            hue-rotate(${valuesObj.fluidHueRotate}deg) 
+            grayscale(${valuesObj.fluidGrayscale}%) 
+            brightness(${valuesObj.fluidBrightness}%) 
+            blur(${valuesObj.fluidBlur}px) 
+            opacity(${valuesObj.fluidOpacity}%)
+            `
+        })
+    }
+
+
+    function resetToDefault(){
+        let defaultVals = {
+            // borderColor: '#16006c91',
+            // backgroundColor: '#c8c4ff14',
+            // backgroundBlur: '6',
+            // insetColor: '#27305333',
+            fluidColor1: '#ff803c',
+            fluidColor2: '#ff008c',
+            fluidColor3: '#ff9b19',
+            fluidColor4: '#62ff72',
+            fluidColor5: '#ff2243',
+            fluidHueRotate: '250',
+            fluidGrayscale: '60',
+            fluidBrightness: '140',
+            fluidBlur: '5',
+            fluidOpacity: '70'
+        }
+
+        for (let key in defaultVals){
+        let paramsKey = `${key}Parameter`;
+        console.log(paramsKey)
+        let param = fluidParamsArray[paramsKey];
+        
+        valuesObj[key] = defaultVals[key];
+        param.value = valuesObj[key];
+        }
+
+        fluidSim.style.filter=`
+            drop-shadow(9px 9px ${valuesObj.fluidColor1}) 
+            drop-shadow(27px 18px ${valuesObj.fluidColor2}) 
+            drop-shadow(-9px 27px ${valuesObj.fluidColor3}) 
+            drop-shadow(-27px 36px ${valuesObj.fluidColor4}) 
+            drop-shadow(0px 45px ${valuesObj.fluidColor5}) 
+            hue-rotate(${valuesObj.fluidHueRotate}deg) 
+            grayscale(${valuesObj.fluidGrayscale}%) 
+            brightness(${valuesObj.fluidBrightness}%) 
+            blur(${valuesObj.fluidBlur}px) 
+            opacity(${valuesObj.fluidOpacity}%)
+            `
+
+        return
+    }
+
+
+    // // // // // // // // // INITIALIZE // // // // // // // // // 
+    document.addEventListener('DOMContentLoaded', (evt) => {
+        console.log('DONE')
+        document.getElementById('editPanelContainer').style.backgroundColor = `${valuesObj.backgroundColor}`
+        slidersInit();
+    })
+</script>
+</div>
+{% endblock %}

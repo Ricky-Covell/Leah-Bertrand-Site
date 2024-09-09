@@ -1,12 +1,13 @@
 import os
 
+import json
 from flask import Flask, render_template, jsonify, request, flash, redirect, session, url_for, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
 # from seed import seed_database
-from models import db, connect_db, Work, Performance
-from forms import UserAddForm, LoginForm
+from models import db, connect_db, Work, Performance, Admin, Appearance
+from forms import UserAddForm, LoginForm, EditForm
 
 CURR_USER_KEY = "curr_user"
 
@@ -16,8 +17,9 @@ if __name__ == '__main__':
       app.run(host='0.0.0.0', port=10000)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
+      os.environ.get('DATABASE_URL', 'postgresql:///leah'))
     # os.environ.get('DATABASE_URL', 'postgresql://leah_user:VMrcPl0kd06Lk703K1ohdmSayrI84T7D@dpg-cr9uu056l47c73cv32qg-a/leah'))
-    os.environ.get('DATABASE_URL', 'postgresql:///leah'))
+    
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
@@ -30,13 +32,6 @@ toolbar = DebugToolbarExtension(app)
 
 app.app_context().push()
 connect_db(app)
-
-
-    
-db.session.add_all([work1, work2, work3, work4, performance1])
-db.session.commit()
-
-# seed_database()
 
 # # # # # # # # # # # # # # # # GENERAL ROUTES # # # # # # # # # # # # # # # # # # # # 
 @app.route('/', methods=["GET"])
@@ -91,31 +86,31 @@ def edit_work(work_id):
 
 
 # # # # # # # # # # # # # # # # ADMIN LOGIN # # # # # # # # # # # # # # # # # # # # 
-# @app.before_request
-# def add_user_to_g():
-#     """If we're logged in, add curr user to Flask global."""
+@app.before_request
+def add_user_to_g():
+    """If we're logged in, add curr user to Flask global."""
 
-#     if CURR_USER_KEY in session:
-#         g.admin = Admin.query.get(session[CURR_USER_KEY])
+    if CURR_USER_KEY in session:
+        g.admin = Admin.query.get(session[CURR_USER_KEY])
 
-#     else:
-#         g.admin = None
-
-
-# def do_login(admin):
-#     """Log in user."""
-
-#     session[CURR_USER_KEY] = admin.id
+    else:
+        g.admin = None
 
 
-# def do_logout():
-#     """Logout user."""
+def do_login(admin):
+    """Log in user."""
 
-#     if CURR_USER_KEY in session:
-#         del session[CURR_USER_KEY]
+    session[CURR_USER_KEY] = admin.id
 
 
-# # # # # # # # # # # # # # # # ADMIN ROUTES # # # # # # # # # # # # # # # # # # # # 
+def do_logout():
+    """Logout user."""
+
+    if CURR_USER_KEY in session:
+        del session[CURR_USER_KEY]
+
+
+# # # # # # # # # # # # # # # ADMIN ROUTES # # # # # # # # # # # # # # # # # # # # 
 # @app.route('/', subdomain ='admin', methods=["GET"])
 # @app.route('/admin/add', methods=["GET", "POST"])
 # def admin_page(): 
@@ -146,38 +141,54 @@ def edit_work(work_id):
     
 
 
-# @app.route('/admin/login', methods=["GET", "POST"])
-# def admin_login():
-#     """Handle admin login."""
-#     if g.admin:
-#         return redirect("/admin/edit")
+@app.route('/admin/login', methods=["GET", "POST"])
+def admin_login():
+    """Handle admin login."""
+    if g.admin:
+        return redirect("/admin/edit")
 
-#     form = LoginForm()
+    form = LoginForm()
 
-#     if form.validate_on_submit():
-#         admin = Admin.authenticate(form.username.data,
-#                                  form.password.data)
+    if form.validate_on_submit():
+        admin = Admin.authenticate(form.username.data,
+                                 form.password.data)
 
-#         if admin:
-#             do_login(admin)
-#             return redirect("/admin/edit")
+        if admin:
+            do_login(admin)
+            return redirect("/admin/edit")
 
-#         flash("Invalid credentials.", 'danger')
+        flash("Invalid credentials.", 'danger')
 
-#     return render_template('admin-login.html', form=form)
-
-
-
-# @app.route('/admin/edit', methods=["GET", "POST"])
-# def edit_site():
-#     """Handle admin login."""
-#     if not g.admin:
-#         return redirect("/")
-
-#     return render_template('edit-site.html')
+    return render_template('admin-login.html', form=form)
 
 
 
+@app.route('/admin/logout', methods=["GET", "POST"])
+def admin_logout():
+    """Handle admin login."""
+    if g.admin:
+        do_logout()
+        return redirect("/")
+
+
+    return redirect("/")
+
+
+
+@app.route('/admin/edit', methods=["GET", "POST"])
+def edit_site():
+    """Handle admin login."""
+    if not g.admin:
+        return redirect("/")
+
+    appearances = Appearance.query.all()
+    works = Work.query.all()
+    form = EditForm()
+
+    return render_template('edit-site.html', works=works, form=form, appearances=appearances)
+
+
+# Username&Password = Leah
 
 
 

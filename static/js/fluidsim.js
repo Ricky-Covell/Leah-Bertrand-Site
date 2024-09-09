@@ -48,6 +48,33 @@ function thing(argument) {
 thing("Yo.");
 
 */
+
+// RATE LIMIT VIA THROTTLE requestanimationframe ?
+    // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
+
+
+// **Ricky** Rate limited with setTimeout() to reduce CPU usaged
+var timesPerSecond = 10;
+var wait = false;
+
+    // ORIGINAL VALUES
+// let velocityMacro = 0.25
+// let velocityDec = 0.99
+let pressureMacro = 0.25;
+let velocityDec = 0.99;
+
+// if (!wait) {        
+//     wait = true;
+//     // after a fraction of a second, allow events again
+//     setTimeout(function () {
+//         wait = false;
+//     }, 1000 / timesPerSecond);
+// }
+
+
+
+
+
 (function(w) {
 
     var canvas, ctx;
@@ -70,15 +97,17 @@ thing("Yo.");
     throughout the rest of the script.
     */
     let resNum = 100
+    let penMult = 1
+    // let resMult = resNum * 1
 
-    let vwidth = Math.ceil(Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)/100)*resNum 
-    let vheight = Math.ceil(Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)/100)*resNum
+    let vwidth = Math.ceil(Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)/resNum)*resNum  
+    let vheight = Math.ceil(Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)/resNum)*resNum
     var canvas_width = vwidth; //Needs to be a multiple of the resolution value below.
     var canvas_height = vheight ; //This too.
     
     var resolution = resNum; //Width and height of each cell in the grid.
     
-    var pen_size = 50; //Radius around the mouse cursor coordinates to reach when stirring
+    var pen_size = resNum * penMult; //Radius around the mouse cursor coordinates to reach when stirring
 
     var num_cols = canvas_width / resolution; //This value is the number of columns in the grid.
     var num_rows = canvas_height / resolution; //This is number of rows.
@@ -365,7 +394,7 @@ thing("Yo.");
     uses RequestAnimationFrame to run itself again and again.
     */
     function draw() {
-        /*
+         /*
         This calculates the velocity of the mouse by getting the distance between the last coordinates and 
         the new ones. The coordinates will be further apart depending on how fast the mouse is moving.
         */
@@ -412,11 +441,10 @@ thing("Yo.");
             // ?
         ctx.strokeStyle = "#FFEB9A";
 
+        update_particle();                    
 
         //This calls the function to update the particle positions.
-        update_particle();
-
-        /*
+                    /*
         This calls the function to update the cell velocity for every cell by looping through
         all of the rows and columns.
         */
@@ -437,7 +465,13 @@ thing("Yo.");
 
         //This requests the next animation frame which runs the draw() function again.
         requestAnimationFrame(draw);
-
+        if (!wait) {        
+            wait = flase;
+            // after a fraction of a second, allow events again
+            setTimeout(function () {
+                wait = false;
+            }, 1000 / timesPerSecond);
+        }
     }
 
   
@@ -507,7 +541,10 @@ thing("Yo.");
     This function updates the velocity value for an individual cell using the 
     velocities of neighboring cells.
     */
+
+
     function update_velocity(cell_data) {
+
 
         /*
         This adds one-fourth of the collective pressure from surrounding cells to the 
@@ -520,7 +557,7 @@ thing("Yo.");
             - cell_data.up_right.pressure * 0.5
             - cell_data.right.pressure
             - cell_data.down_right.pressure * 0.5
-        ) * 0.25;
+        ) * pressureMacro;
         
         //This does the same for the Y axis.
         cell_data.yv += (
@@ -530,14 +567,14 @@ thing("Yo.");
             - cell_data.down_left.pressure * 0.5
             - cell_data.down.pressure
             - cell_data.down_right.pressure * 0.5
-        ) * 0.25;
+        ) * pressureMacro;
         
         /*
         This slowly decreases the cell's velocity over time so that the fluid stops
         if it's left alone.
         */
-        cell_data.xv *= 0.99;
-        cell_data.yv *= 0.99;
+        cell_data.xv *= velocityDec;
+        cell_data.yv *= velocityDec;
     }
 
   
@@ -578,7 +615,7 @@ thing("Yo.");
     this function when it's called.
     */
     function mouse_down_handler(e) {
-        e.preventDefault(); //Prevents the default action from happening (e.g. navigation)
+        // e.preventDefault(); //Prevents the default action from happening (e.g. navigation)
         mouse.down = true; //Sets the mouse object's "down" value to true
     }
 
@@ -592,11 +629,15 @@ thing("Yo.");
     //This function is called whenever a touch is registered.
     function touch_start_handler(e) {
         e.preventDefault(); //Prevents the default action from happening (e.g. navigation)
+
+        // don't handle events when one has just occurred
+        
         var rect = canvas.getBoundingClientRect();
         mouse.x = mouse.px = e.touches[0].pageX - rect.left; //Set both previous and current coordinates
         mouse.y = mouse.py = e.touches[0].pageY - rect.top;
         mouse.down = true; //Sets the mouse object's "down" value to true
     }
+
   
     //This function is called whenever a touch point is removed from the screen.
     function touch_end_handler(e) {
@@ -608,16 +649,22 @@ thing("Yo.");
     This function is called whenever the mouse coordinates have changed. The coordinates are checked by the 
     browser at intervals.
     */
+
+
     function mouse_move_handler(e) {
         e.preventDefault(); //Prevents the default action from happening
+
+        // don't handle events when one has just occurred
+        
         //Saves the previous coordinates
         mouse.px = mouse.x;
         mouse.py = mouse.y;
 
         //Sets the new coordinates
         mouse.x = e.offsetX || e.layerX;
-        mouse.y = e.offsetY || e.layerY;
-    }
+        mouse.y = e.offsetY || e.layerY;  
+};
+    
 
   
     /*
@@ -626,18 +673,22 @@ thing("Yo.");
     */
     function touch_move_handler(e) {
         e.preventDefault(); //Prevents the default action from happening
-        mouse.px = mouse.x;
-        mouse.py = mouse.y;
 
-        //This line gets the coordinates for where the canvas is positioned on the screen.
-        var rect = canvas.getBoundingClientRect();
 
-        /*
-        And this sets the mouse coordinates to where the first touch is. Since we're using pageX
-        and pageY, we need to subtract the top and left offset of the canvas so the values are correct.
-        */
-        mouse.x = e.touches[0].pageX - rect.left;
-        mouse.y = e.touches[0].pageY - rect.top;
+        // don't handle events when one has just occurred
+        
+            mouse.px = mouse.x;
+            mouse.py = mouse.y;
+    
+            //This line gets the coordinates for where the canvas is positioned on the screen.
+            var rect = canvas.getBoundingClientRect();
+    
+            /*
+            And this sets the mouse coordinates to where the first touch is. Since we're using pageX
+            and pageY, we need to subtract the top and left offset of the canvas so the values are correct.
+            */
+            mouse.x = e.touches[0].pageX - rect.left;
+            mouse.y = e.touches[0].pageY - rect.top;
     }
 
   

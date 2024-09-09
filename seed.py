@@ -1,8 +1,11 @@
-from models import db, Work, Performance
+from app import app
+from models import db, Work, Performance, Admin, Appearance
+
+db.drop_all()
+db.create_all()
 
 
-def seed_database():
-    work1 = Work(
+work1 = Work(
         title='The wet centre is bottomless', 
         medium='ambisonic fixed media', 
         year='2019', 
@@ -18,7 +21,7 @@ def seed_database():
         img_filter=''
     )
     
-    work2 = Work(
+work2 = Work(
         title=' Almost an Ocean', 
         medium='stereo fixed media', 
         year='2019', 
@@ -34,7 +37,7 @@ def seed_database():
         img_filter=''
     )
     
-    work3 = Work(
+work3 = Work(
         title='The Big Lamp', 
         medium='installation/performance', 
         year='2018', 
@@ -50,7 +53,7 @@ def seed_database():
         img_filter='filter-off'
     )
     
-    work4 = Work(
+work4 = Work(
         title='Dregs-Magic', 
         medium='audiovisual fixed media', 
         year='2017', 
@@ -66,7 +69,7 @@ def seed_database():
         img_filter='filter-off'
     )
     
-    performance1 = Performance(
+performance1 = Performance(
         title='Beg’d',
         medium='performance',
         year='2018',
@@ -81,9 +84,31 @@ def seed_database():
         downdload_link='',
         img_filter='filter-off'
     )
+
+appearance = Appearance(
+        border_color='#16006c91',
+        background_color='#c8c4ff14',
+        background_blur='6',
+        inset_color='#27305333',
+        fluid_color_1='#ff803c',
+        fluid_color_2='#ff008c',
+        fluid_color_3='#ff9b19',
+        fluid_color_4='#62ff72',
+        fluid_color_5='#ff2243',
+        fluid_hue_rotate='250',
+        fluid_grayscale='60',
+        fluid_brightness='140',
+        fluid_blur='5',
+        fluid_opacity='70'
+ )
+
+admin = Admin(
+        username='Leah',
+        password='$2b$12$32KOW5UVckk.QWquCokVOuMrGsCxsYWoFBxFGqZWrb4rCjwTQculu'
+)
     
-    db.session.add_all([work1, work2, work3, work4, performance1])
-    db.session.commit()
+db.session.add_all([work1, work2, work3, work4, performance1, admin, appearance])
+db.session.commit()
 
 
 
