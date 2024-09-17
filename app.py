@@ -4,6 +4,7 @@ import json
 from flask import Flask, render_template, jsonify, request, flash, redirect, session, url_for, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
+from seed import seed_database
 
 # from seed import seed_database
 from models import db, connect_db, Work, Performance, Admin, Appearance
@@ -27,12 +28,13 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 
 
-toolbar = DebugToolbarExtension(app)
+#toolbar = DebugToolbarExtension(app)
 
 
 app.app_context().push()
 connect_db(app)
 
+seed_database()
 
 # # # # # # # # # # # # # # # # BEFORE # # # # # # # # # # # # # # # # # # # # 
 @app.before_request
