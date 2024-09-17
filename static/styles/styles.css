@@ -3,13 +3,16 @@
 :root {
     /* --containerBackgroundColor: rgba(232, 162, 255, 0.036); */
     /* --containerBorderColor: rgba(22, 0, 36, 0.28); */
+    /* --containerBorderColor: rgba(22, 0, 108, 0.568); */
 
-    --containerBorderColor: #16006c91;
-    --containerBackgroundColor: #c8c4ff14;
+    --containerBackgroundColor: rgba(200, 196, 255, 0.08);
     --borderType: solid;
     --backdropBlur: blur(6px);
-    --inset1: groove 5px #27305333; 
+    --soundcloudColor: 50deg;
+    --inset1: groove 5px rgba(39, 48, 83, 0.2); 
     --inset1sm: groove 4px rgba(39, 48, 83, 0.2); 
+    --accentColor: rgba(109, 114, 255, 0.413);
+    --accentColorText: rgba(109, 114, 255);
 }
 
 html {
@@ -39,7 +42,7 @@ body {
   
   ::-webkit-scrollbar-thumb {
     border-radius: 4px;
-    background-color: rgba(109, 114, 255, 0.413);
+    background-color: var(--accentColor);
     /* box-shadow: 0 0 1px rgba(255, 255, 255, .5); */
   }
 
@@ -200,7 +203,7 @@ h4, h6 {
 }
 
 .nav-link:hover {
-    color: rgb(127, 97, 132) !important;
+    color: var(--accentColorText) !important;
     filter: blur(1px);
 }
 
@@ -212,73 +215,9 @@ h4, h6 {
     color: black;
 }
 
-/* // // // // // // // // // EDIT PANEL // // // // // // // // // // // //  */
-
-#editPanelContainer {
-    display: block;
-    position: absolute;
-    font-family: 'leahFont';
-    height: 100%;
-    width: 20%;
-    right: 80%;
-    border: 1px solid black;
-    background-color: white;
-    backdrop-filter: blur(20px);
-}
-
-#editFormContainer {
-    margin-top: 5%;
-}
-
-#editModeButtonsContainer {
-    margin-bottom: 40%;
-}
-
-#editFormContainer {
-    /* width:% */
-}
-
-
-.form-control {
-    --bs-body-bg: #e0d6ff89;
-    --bs-border-color: black;
-    
-    width: 150%;
-    background-color: #78769584;
-    text-align: center;
-    border: 1px solid black;
-    margin-left: -25%;
-}
-
-.edit-page-label {
-    text-align: center;
-    margin-top: 8%;
-    margin-bottom: 0%;
-}
-
-#submitChangesButton {
-    display: block;
-    position: static;
-    margin-top: 60%;
-
-    border: 1px solid black;
-    color: #1d1c24;
-    background-color: #9d00ff1b;
-}
-
-
-
-
-
-/* // // // // // // // // // SITE PAGE // // // // // // // // // // // //  */
-
-/* SITE PAGE CONTAINER */
-#sitePageContainer {
-    display: block;
-    position: absolute;
-    height: 100%;
-    width: 80%;
-    left: 20%;
+#toEditButton {
+    z-index: 10000;
+    font-size: 80px;
 }
 
 
@@ -286,11 +225,11 @@ h4, h6 {
 #worksDropdownContainer {
     display: block;
     position: absolute;
-    height: 82%;
-    width: 40%;
-    /* margin-left: 10%; */
+    height: 84%;
+    width: 80%;
+    margin-left: 10%;
     margin-right: 10%;
-    margin-top: 10%;
+    margin-top: 2%;
     background-color: var(--containerBackgroundColor);
 }
 
@@ -308,7 +247,7 @@ h4, h6 {
 
 .works-card-image {
     border-radius: 0%;
-    filter: opacity(80%);    
+    filter: opacity(90%);    
 }
 
 
@@ -317,7 +256,7 @@ h4, h6 {
     /* border: groove 8px rgba(64, 78, 136, 0.2); */
     /* border: groove 4px rgba(129, 145, 209, 0.3); */
     border: var(--inset1sm);
-    margin-top: 6%;
+    margin-top: 13%;
     margin-left: 5%;
     margin-right: 5%;
     border-radius: 0%;
@@ -329,7 +268,7 @@ h4, h6 {
 .card-nav-img-size {
     width: 100%;
     height: 12vw;
-    object-fit:fill;
+    object-fit: cover;
 }
 
 
@@ -338,8 +277,7 @@ h4, h6 {
     width: 80%;
     margin: auto;
     height: 75%;
-    margin-top: 7%;
-
+    margin-top: 4%;
 }
 
 .show-work-flex-container {
@@ -406,7 +344,6 @@ h4, h6 {
     height: 84%;
     margin-top: 2%;
     overflow:hidden;
-    left: 23%;
 }
 
 .ind-work-img-container {
@@ -475,7 +412,7 @@ h4, h6 {
     height:18.5%; 
     overflow:hidden;     
     overflow-x:hidden;   
-    filter: hue-rotate(50deg) opacity(70%) grayscale(40%) invert();
+    filter: hue-rotate(var(--soundcloudColor)) opacity(80%) grayscale(30%) invert();
     padding-bottom: 0px !important;
 }
 
@@ -539,11 +476,6 @@ h4, h6 {
 canvas {
     /* z-index: -1; */
 }
-
-#editPanelContainer {
-    /* z-index: 100000; */
-}
-
 #navbarContainer {
     z-index: 1000;
 }
@@ -577,9 +509,12 @@ canvas{
     position: absolute;
     width: 100%;
     height: 100%;
-    left: 20%;
+    /* margin: auto; */
     top: 0;
-    /* transform: scale(3, 1); */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* transform: scale(.95, .95); */
 
     filter:
         
@@ -594,11 +529,11 @@ canvas{
         /* hue-rotate(195deg) */
         
         
-        drop-shadow(calc(var(--dsBase) * 1) calc(var(--dsBase) * 1) #ff803c) 
-        drop-shadow(calc(var(--dsBase) * 3) calc(var(--dsBase) * 2) #ff008c) 
-        drop-shadow(calc(var(--dsBase) * -1) calc(var(--dsBase) * 3) #ff9b19)
-        drop-shadow(calc(var(--dsBase) * -3) calc(var(--dsBase) * 4) #62ff72) 
-        drop-shadow(0px calc(var(--dsBase) * 5) #ff2243)
+        drop-shadow(calc(var(--dsBase) * 1) calc(var(--dsBase) * 1) rgb(255, 128, 60)) 
+        drop-shadow(calc(var(--dsBase) * 3) calc(var(--dsBase) * 2) rgb(255, 0, 140)) 
+        drop-shadow(calc(var(--dsBase) * -1) calc(var(--dsBase) * 3) rgb(255, 155, 25))
+        drop-shadow(calc(var(--dsBase) * -3) calc(var(--dsBase) * 4) rgb(98, 255, 114)) 
+        drop-shadow(0px calc(var(--dsBase) * 5) rgb(255, 34, 67))
         /* drop-shadow(calc(var(--dsBase) * -3) calc(var(--dsBase) * 5) rgb(255, 34, 67)) */
         /* hue-rotate(-90deg) */
         hue-rotate(250deg)

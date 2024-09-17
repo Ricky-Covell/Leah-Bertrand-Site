@@ -6,10 +6,11 @@
 
 {% block content %}
 <div id="stylesheet">
-    <link rel="stylesheet" href="/static/blueMax.css">
+    <link rel="stylesheet" href="/static/styles/styles.css">
 </div>
 
 <p id="hintText">click and drag!</p>
+
 
 
 <canvas id="c"></canvas>
@@ -22,4 +23,81 @@
 
 
 <script type="text/javascript" src="/static/js/navigation.js"></script>
+
+
+
+
+
+
+
+
+<!-- PROBLEM: how to get {{ appearances }} to register in a seperate js file without async requests? -->
+
+<!-- // // // // // // // // // SCRIPT // // // // // // // // //  --> 
+<script type="text/javascript">
+    const onEditPage = false;      // signals fluidsim to not prevent default on mousedown if True
+
+    let valuesObj = {
+        backgroundColor: '{{ appearances[0].background_color }}',
+        backgroundBlur: '{{ appearances[0].background_blur }}',
+        insetColor: '{{ appearances[0].inset_color }}',
+        soundcloudColor: '{{ appearances[0].soundcloud_color }}',
+        accentColor: '{{ appearances[0].accent_color }}',
+        fluidColor1: '{{ appearances[0].fluid_color_1 }}',
+        fluidColor2: '{{ appearances[0].fluid_color_2 }}',
+        fluidColor3: '{{ appearances[0].fluid_color_3 }}',
+        fluidColor4: '{{ appearances[0].fluid_color_4 }}',
+        fluidColor5: '{{ appearances[0].fluid_color_5 }}',
+        fluidHueRotate: '{{ appearances[0].fluid_hue_rotate }}',
+        fluidGrayscale: '{{ appearances[0].fluid_grayscale }}',
+        fluidBrightness: '{{ appearances[0].fluid_brightness }}',
+        fluidBlur: '{{ appearances[0].fluid_blur }}',
+        fluidOpacity: '{{ appearances[0].fluid_opacity }}',
+        fluidInvert: '{{ appearances[0].fluid_invert }}'
+    }
+
+    let fluidSim = document.getElementById('c')
+
+    function initialize(){
+        document.body.style.setProperty('--containerBackgroundColor', `${valuesObj.backgroundColor}14`);
+        document.body.style.setProperty('--backdropBlur', `blur(${valuesObj.backgroundBlur}px)`);
+        document.body.style.setProperty('--inset1', `groove 5px ${valuesObj.insetColor}33`);
+        document.body.style.setProperty('--inset1sm', `groove 4px ${valuesObj.insetColor}33`);
+        document.body.style.setProperty('--soundcloudColor', `${valuesObj.soundcloudColor}deg`);
+        document.body.style.setProperty('--accentColor', `${valuesObj.accentColor}69`);
+        document.body.style.setProperty('--accentColorText', `${valuesObj.accentColor}`);
+
+        let invertValue;
+
+        if (valuesObj.fluidInvert === 'True') {
+          invertValue = '100%';
+          } else if (valuesObj.fluidInvert === 'False') {
+            invertValue = '0%';
+        }
+
+        fluidSim.style.filter=`
+            drop-shadow(9px 9px ${valuesObj.fluidColor1}) 
+            drop-shadow(27px 18px ${valuesObj.fluidColor2}) 
+            drop-shadow(-9px 27px ${valuesObj.fluidColor3}) 
+            drop-shadow(-27px 36px ${valuesObj.fluidColor4}) 
+            drop-shadow(0px 45px ${valuesObj.fluidColor5}) 
+            hue-rotate(${valuesObj.fluidHueRotate}deg) 
+            grayscale(${valuesObj.fluidGrayscale}%) 
+            brightness(${valuesObj.fluidBrightness}%) 
+            blur(${valuesObj.fluidBlur}px) 
+            opacity(${valuesObj.fluidOpacity}%)
+            invert(${invertValue})
+            `
+    }
+
+    if ('{{ isAdmin }}' === 'True') {
+            document.getElementById('toEditButtonLi').classList.add('d-block');
+            document.getElementById('toEditButtonLi').classList.remove('d-none');
+        }
+    // // // // // // // // // INITIALIZE // // // // // // // // // 
+    document.addEventListener('DOMContentLoaded', (evt) => {
+        initialize();
+    })
+</script>
+</div>
 {% endblock %}

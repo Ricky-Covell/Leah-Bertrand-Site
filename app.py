@@ -33,14 +33,56 @@ toolbar = DebugToolbarExtension(app)
 app.app_context().push()
 connect_db(app)
 
+
+# # # # # # # # # # # # # # # # BEFORE # # # # # # # # # # # # # # # # # # # # 
+@app.before_request
+def add_user_to_g():
+    """If we're logged in, add curr user to Flask global."""
+
+    if CURR_USER_KEY in session:
+        g.admin = Admin.query.get(session[CURR_USER_KEY])
+
+    else:
+        g.admin = None
+
+
+def do_login(admin):
+    """Log in user."""
+
+    session[CURR_USER_KEY] = admin.id
+
+
+def do_logout():
+    """Logout user."""
+
+    if CURR_USER_KEY in session:
+        del session[CURR_USER_KEY]
+
+
+
+# # # # # # # # # # # LOGIN ADMIN AUTOMATICALLY FOR HATCHWAY REVIEW # # # # # # # # # # # # # # #  
+@app.before_request
+def auto_login():
+    if not CURR_USER_KEY in session:
+        admin = Admin.authenticate('Leah', 'Leah')
+        do_login(admin)
+
+
+
 # # # # # # # # # # # # # # # # GENERAL ROUTES # # # # # # # # # # # # # # # # # # # # 
 @app.route('/', methods=["GET"])
 def landing(): 
 
+    isAdmin = 'False'
+    if (g.admin is not None):
+        isAdmin = 'True'
+
+
     works = Work.query.all()
     performances = Performance.query.all()
+    appearances = Appearance.query.all()
     
-    return render_template('landing.html', works=works, performances=performances) 
+    return render_template('landing.html', works=works, performances=performances, appearances=appearances, isAdmin=isAdmin) 
 
 
 
@@ -86,66 +128,11 @@ def edit_work(work_id):
 
 
 # # # # # # # # # # # # # # # # ADMIN LOGIN # # # # # # # # # # # # # # # # # # # # 
-@app.before_request
-def add_user_to_g():
-    """If we're logged in, add curr user to Flask global."""
-
-    if CURR_USER_KEY in session:
-        g.admin = Admin.query.get(session[CURR_USER_KEY])
-
-    else:
-        g.admin = None
-
-
-def do_login(admin):
-    """Log in user."""
-
-    session[CURR_USER_KEY] = admin.id
-
-
-def do_logout():
-    """Logout user."""
-
-    if CURR_USER_KEY in session:
-        del session[CURR_USER_KEY]
-
-
-# # # # # # # # # # # # # # # ADMIN ROUTES # # # # # # # # # # # # # # # # # # # # 
-# @app.route('/', subdomain ='admin', methods=["GET"])
-# @app.route('/admin/add', methods=["GET", "POST"])
-# def admin_page(): 
-
-# @app.route('/admin/add', methods=["GET", "POST"])
-# def admin_add(): 
-
-#     form = UserAddForm()
-
-#     if form.validate_on_submit():
-#         try:
-#             admin = Admin.signup(
-#                 username=form.username.data,
-#                 password=form.password.data,
-#             )
-#             db.session.commit()
-
-#         except IntegrityError:
-#             flash("Username already taken", 'danger')
-#             return render_template('admin-add.html', form=form)
-
-#         do_login(admin)
-
-#         return redirect("/admin")
-
-#     else:
-#         return render_template('admin-add.html', form=form)
-    
-
-
-@app.route('/admin/login', methods=["GET", "POST"])
+@app.route('/login', methods=["GET", "POST"])
 def admin_login():
     """Handle admin login."""
     if g.admin:
-        return redirect("/admin/edit")
+        return redirect("/edit")
 
     form = LoginForm()
 
@@ -155,7 +142,7 @@ def admin_login():
 
         if admin:
             do_login(admin)
-            return redirect("/admin/edit")
+            return redirect("/edit")
 
         flash("Invalid credentials.", 'danger')
 
@@ -163,7 +150,7 @@ def admin_login():
 
 
 
-@app.route('/admin/logout', methods=["GET", "POST"])
+@app.route('/logout', methods=["GET", "POST"])
 def admin_logout():
     """Handle admin login."""
     if g.admin:
@@ -175,7 +162,7 @@ def admin_logout():
 
 
 
-@app.route('/admin/edit', methods=["GET", "POST"])
+@app.route('/edit', methods=["GET", "POST"])
 def edit_site():
     """Handle admin login."""
     if not g.admin:
@@ -184,6 +171,28 @@ def edit_site():
     appearances = Appearance.query.all()
     works = Work.query.all()
     form = EditForm()
+
+    if form.validate_on_submit():
+        appearances[0].background_color = form.background_color.data
+        appearances[0].background_blur = form.background_blur.data
+        appearances[0].inset_color = form.inset_color.data
+        appearances[0].soundcloud_color = form.soundcloud_color.data
+        appearances[0].accent_color = form.accent_color.data
+        appearances[0].fluid_color_1 = form.fluid_color_1.data
+        appearances[0].fluid_color_2 = form.fluid_color_2.data
+        appearances[0].fluid_color_3 = form.fluid_color_3.data
+        appearances[0].fluid_color_4 = form.fluid_color_4.data
+        appearances[0].fluid_color_5 = form.fluid_color_5.data
+        appearances[0].fluid_hue_rotate = form.fluid_hue_rotate.data
+        appearances[0].fluid_grayscale = form.fluid_grayscale.data
+        appearances[0].fluid_brightness = form.fluid_brightness.data
+        appearances[0].fluid_blur = form.fluid_blur.data
+        appearances[0].fluid_opacity = form.fluid_opacity.data
+        appearances[0].fluid_invert = form.fluid_invert.data
+
+        db.session.commit()
+            
+        return redirect('/')
 
     return render_template('edit-site.html', works=works, form=form, appearances=appearances)
 

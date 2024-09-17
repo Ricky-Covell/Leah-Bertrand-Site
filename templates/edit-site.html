@@ -28,7 +28,11 @@
             {% endfor %}
     
             <div>
-                <button class="btn btn-primary btn-block btn-lg" id="submitChangesButton">  SAVE CHANGES  </button>
+                <span>
+                  <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitChangesButton">  SAVE </button>
+                  <button type="submit" class="btn btn-primary btn-block btn-lg" id="defaultButton">  DEFAULT  </button>
+                  <a href="/" class="" id="">  GO BACK  </button>
+                </span>
             </div>
           </form>
         </div>
@@ -38,16 +42,79 @@
 
 
 
+
+
             <!-- // // // // // // // // // SITE PAGE // // // // // // // // //  -->
 <div id="sitePageContainer">
-    
-
-
-
-<div id="stylesheet"></div>
-    <link rel="stylesheet" href="/static/edit-page.css">
+  <!-- Navbar -->
+<div class="container d-none" id="navbarContainer">
+  <ul class="nav nav-pills nav-fill ul-filter">
+                  <!-- NAME -->
+      <li class="nav-item active" id="nav-leah">
+          <a href="/" class="nav-link fs-2 nav-name-color" id="worksNavItem">Leah Bertrand</a>
+      </li>
+                  <!-- WORKS -->            
+      <li class="nav-item" id="worksDropdownHover">
+          <a href="/#" class="nav-link fs-3 nav-text-color" id="worksNavItem">Works</a>
+      </li>
+                  <!-- WORKS -->            
+      <li class="nav-item" id="performancesDropdownHover">
+          <a href="/#" class="nav-link fs-3 nav-text-color" id="performanceNavItem">Performances</a>
+      </li>
+                  <!-- ABOUT -->
+      <li class="nav-item">
+          <a href="/about" class="nav-link fs-3 nav-text-color" id="navAbout">About</a> 
+      </li>
+  </ul>
 </div>
 
+<!-- Individual Works -->
+<div class="d-none" id="showWorkArea">
+      <div class="show-work-container " id="display-work-{{ works[0].id }}">
+          <div class="d-flex show-work-flex-container">
+              <div class="p-5 work-text-container">
+                              <!-- WORK HEADER -->
+                  <div class="p-1"><h2 class="text-center text-highlight-1 font-mode-1">{{ works[0].title }}</h2></div>
+                  <div class=""><h4 class="text-center text-highlight-3 font-mode-1">{{ works[0].medium }}, {{ works[0].year }}</h4></div>
+                              <!-- WORK DESCRIPTION -->
+                  <p class="fs-5 text-highlight-4 font-mode-1">{{ works[0].description1 }}</p>
+                               <!-- SOUNDCLOUD EMBED -->
+                  {% if works[0].soundcloud_track_id %}
+                  {% if works[0].soundcloud_header %}
+                  <div class="p-1 text-highlight-1 font-mode-1">
+                      <h4 class="text-center font-mode-1">{{ works[0].soundcloud_header }}</h3>
+                  </div>
+                  {% endif %}
+                  <div class="embed-responsive soundcloud-container mx-auto">
+                      <iframe name="soundcloudWidget" class="embed-responsive-item ml-auto d-block soundcloud-player" width="60%" height="140" scrolling="no" frameborder="yes" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ works[0].soundcloud_track_id }}&auto_play=false&hide_related=false&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=true"></iframe>            
+                  </div>
+                  {% endif %}
+              </div>
+                              <!-- WORK IMAGES -->            
+              <div class="p-5 show-work-img-container ">
+                              <!-- WORK LEAD IMAGE -->            
+                  <img class="show-work-img {{works[0].img_filter}}" src="{{works[0].image1}}" alt="">
+                              <!-- WORK OPTIONAL IMAGES -->
+                  {% if works[0].image2 %}
+                  <img class="show-work-img show-work-img-multi {{works[0].img_filter}}" src="{{works[0].image2}}" alt="">
+                  {% endif %}
+                  
+                  {% if works[0].image3 %}
+                  <img class="show-work-img show-work-img-multi {{works[0].img_filter}}" src="{{works[0].image3}}" alt="">
+                  {% endif %}
+                  
+                  {% if works[0].image4 %}
+                  <img class="show-work-img show-work-img-multi {{works[0].img_filter}}" src="{{works[0].image4}}" alt="">
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div id="stylesheet">
+    <link rel="stylesheet" href="/static/styles/edit-page.css">
+</div>
 
 
 <canvas id="c"></canvas>
@@ -73,15 +140,25 @@
 
 <!-- // // // // // // // // // SCRIPT // // // // // // // // //  --> 
 <script type="text/javascript">
+    const onEditPage = true;      // signals fluidsim to not prevent default on mousedown
+
+
+    const showWorkArea = document.getElementById('showWorkArea');
+    const navbarContainer = document.getElementById('navbarContainer');
+    const editPanelContainer = document.getElementById('editPanelContainer')
+    const defaultButton = document.getElementById('defaultButton');
+    const fluidSim = document.getElementById('c')
+
+
     let editMode1 = document.getElementById('editMode1');
     let editMode2 = document.getElementById('editMode2');
 
-
     let valuesObj = {
-        borderColor: '{{ appearances[0].border_color }}',
         backgroundColor: '{{ appearances[0].background_color }}',
         backgroundBlur: '{{ appearances[0].background_blur }}',
         insetColor: '{{ appearances[0].inset_color }}',
+        soundcloudColor: '{{ appearances[0].soundcloud_color }}',
+        accentColor: '{{ appearances[0].accent_color }}',
         fluidColor1: '{{ appearances[0].fluid_color_1 }}',
         fluidColor2: '{{ appearances[0].fluid_color_2 }}',
         fluidColor3: '{{ appearances[0].fluid_color_3 }}',
@@ -91,21 +168,25 @@
         fluidGrayscale: '{{ appearances[0].fluid_grayscale }}',
         fluidBrightness: '{{ appearances[0].fluid_brightness }}',
         fluidBlur: '{{ appearances[0].fluid_blur }}',
-        fluidOpacity: '{{ appearances[0].fluid_opacity }}'
+        fluidOpacity: '{{ appearances[0].fluid_opacity }}',
+        fluidInvert: '{{ appearances[0].fluid_invert }}'
     }
+
     
     let windowParamsArray = {
-        borderColorParameter: document.getElementById('border_color'),
         backgroundColorParameter: document.getElementById('background_color'),
         backgroundBlurParameter: document.getElementById('background_blur'),
-        insetColorParameter: document.getElementById('inset_color')
+        insetColorParameter: document.getElementById('inset_color'),
+        soundcloudColorParameter: document.getElementById('soundcloud_color'),
+        accentColorParameter: document.getElementById('accent_color'),
     }
 
     let windowsParamsText = {
-        borderColorParameter: document.getElementById('border_color_label'),
         backgroundColorParameter: document.getElementById('background_color_label'),
         backgroundBlurParameter: document.getElementById('background_blur_label'),
-        insetColorParameter: document.getElementById('inset_color_label')
+        insetColorParameter: document.getElementById('inset_color_label'),
+        soundcloudColorParameter: document.getElementById('soundcloud_color_label'),
+        accentColorParameter: document.getElementById('accent_color_label'),
     }
 
     
@@ -120,6 +201,7 @@
         fluidBrightnessParameter: document.getElementById('fluid_brightness'),
         fluidBlurParameter: document.getElementById('fluid_blur'),
         fluidOpacityParameter: document.getElementById('fluid_opacity'),
+        fluidInvertParameter: document.getElementById('fluid_invert'),
     }
 
 
@@ -134,9 +216,9 @@
         fluidBrightnessParameter: document.getElementById('fluid_brightness_label'),
         fluidBlurParameter: document.getElementById('fluid_blur_label'),
         fluidOpacityParameter: document.getElementById('fluid_opacity_label'),
+        fluidInvertParameter: document.getElementById('fluid_invert_label'),
     }   
     
-    let fluidSim = document.getElementById('c')
     
 
     // EDITING MODE LISTENERS
@@ -154,6 +236,11 @@
             windowsParamsText[key].classList.add('d-none');
             windowsParamsText[key].classList.remove('d-block');
           }
+
+          showWorkArea.classList.add('d-none');
+          showWorkArea.classList.remove('d-block');
+          navbarContainer.classList.add('d-none');
+          navbarContainer.classList.remove('d-block');
     })
 
     editMode2.addEventListener('click', (evt) => {
@@ -162,6 +249,7 @@
             fluidParamsArray[key].classList.remove('d-block');
             fluidParamsText[key].classList.add('d-none');
             fluidParamsText[key].classList.remove('d-block');
+            
           }
 
           for (let key in windowParamsArray) {
@@ -170,13 +258,25 @@
             windowsParamsText[key].classList.add('d-block');
             windowsParamsText[key].classList.remove('d-none');
           }
+
+          showWorkArea.classList.add('d-block')
+          showWorkArea.classList.remove('d-none')
+          navbarContainer.classList.add('d-block')
+          navbarContainer.classList.remove('d-none')
     })
 
-
+ 
 
     // INITIALIZES SLIDERS TO VALUES STORED IN DATABASE
     function slidersInit(){
-        for (let key in fluidParamsArray){
+      for (let key in windowParamsArray){
+        let param = windowParamsArray[key];
+        let valuesKey = `${key}`.replace('Parameter', '');
+        
+        param.value = valuesObj[valuesKey];
+        }
+      
+      for (let key in fluidParamsArray){
         let param = fluidParamsArray[key];
         let valuesKey = `${key}`.replace('Parameter', '');
         
@@ -195,19 +295,73 @@
           windowsParamsText[key].classList.add('d-none');
           windowsParamsText[key].classList.remove('d-block');
         }
+
+        // ADDS 'CHANGE' EVENT LISTENER TO EACH PARAM AND UPDATES APPEARANCE
+        for (let key in fluidParamsArray){
+          if (key !== 'fluidInvertParameter') {
+            let param = fluidParamsArray[key];
+
+            param.addEventListener('change', (evt) => {
+              console.log(`Parameter: ${param.id}       Value: ${param.value}`);
+              
+              let valuesKey = `${key}`.replace('Parameter', '');
+              valuesObj[valuesKey] = param.value;
+          
+              updateAppearance()
+            })
+          }
+      }
+
+        for (let key in windowParamsArray){
+            let param = windowParamsArray[key];
+
+            param.addEventListener('change', (evt) => {
+                console.log(`Parameter: ${param.id}       Value: ${param.value}`);
+
+                let valuesKey = `${key}`.replace('Parameter', '');
+                valuesObj[valuesKey] = param.value;
+            
+                updateAppearance()
+          })
+        }
+
+        fluidParamsArray.fluidInvertParameter.addEventListener('change', (evt) => {  
+              if (fluidParamsArray.fluidInvertParameter.value === 'False') {
+                valuesObj.fluidInvert = 'True';
+                fluidParamsArray.fluidInvertParameter.value = 'True';
+              } else if (fluidParamsArray.fluidInvertParameter.value === 'True'){
+                valuesObj.fluidInvert = 'False';
+                fluidParamsArray.fluidInvertParameter.value = 'False';
+              }
+  
+              updateAppearance()
+            })
+
+        defaultButton.addEventListener('click', evt => {
+          evt.preventDefault();
+          resetToDefault();
+        })
     }
 
-    // ADDS 'CHANGE' EVENT LISTENER TO EACH FLUID PARAM AND UPDATES FLUIDSIM FILTER VALUES
-    for (let key in fluidParamsArray){
-        let param = fluidParamsArray[key];
+    function updateAppearance(){
+      editPanelContainer.style.backgroundColor = `${valuesObj.backgroundColor}14`;
+      document.body.style.setProperty('--containerBackgroundColor', `${valuesObj.backgroundColor}14`);
+      document.body.style.setProperty('--backdropBlur', `blur(${valuesObj.backgroundBlur}px)`);
+      document.body.style.setProperty('--inset1', `groove 5px ${valuesObj.insetColor}33`);
+      document.body.style.setProperty('--inset1sm', `groove 4px ${valuesObj.insetColor}33`);
+      document.body.style.setProperty('--soundcloudColor', `${valuesObj.soundcloudColor}deg`);
+      document.body.style.setProperty('--accentColor', `${valuesObj.accentColor}69`);
+      document.body.style.setProperty('--accentColorText', `${valuesObj.accentColor}`);
+      
+      let invertValue;
 
-        param.addEventListener('change', (evt) => {
-            console.log(`Parameter: ${param.id}       Value: ${param.value}`);
-            
-            let valuesKey = `${key}`.replace('Parameter', '');
-            valuesObj[valuesKey] = param.value;
+      if (valuesObj.fluidInvert === 'True') {
+        invertValue = '100%';
+        } else if (valuesObj.fluidInvert === 'False') {
+          invertValue = '0%';
+        }
 
-            fluidSim.style.filter=`
+      fluidSim.style.filter=`
             drop-shadow(9px 9px ${valuesObj.fluidColor1}) 
             drop-shadow(27px 18px ${valuesObj.fluidColor2}) 
             drop-shadow(-9px 27px ${valuesObj.fluidColor3}) 
@@ -218,17 +372,21 @@
             brightness(${valuesObj.fluidBrightness}%) 
             blur(${valuesObj.fluidBlur}px) 
             opacity(${valuesObj.fluidOpacity}%)
+            invert(${invertValue})
             `
-        })
     }
+
+
+
 
 
     function resetToDefault(){
         let defaultVals = {
-            // borderColor: '#16006c91',
-            // backgroundColor: '#c8c4ff14',
-            // backgroundBlur: '6',
-            // insetColor: '#27305333',
+            backgroundColor: '#c8c4ff',
+            backgroundBlur: '6',
+            insetColor: '#273053',
+            soundcloudColor: '50',
+            accentColor: '#6d72ff',
             fluidColor1: '#ff803c',
             fluidColor2: '#ff008c',
             fluidColor3: '#ff9b19',
@@ -238,19 +396,39 @@
             fluidGrayscale: '60',
             fluidBrightness: '140',
             fluidBlur: '5',
-            fluidOpacity: '70'
+            fluidOpacity: '70',
+            fluidInvert: '0%'
         }
 
-        for (let key in defaultVals){
-        let paramsKey = `${key}Parameter`;
-        console.log(paramsKey)
-        let param = fluidParamsArray[paramsKey];
-        
+      for (let key in defaultVals){
         valuesObj[key] = defaultVals[key];
-        param.value = valuesObj[key];
-        }
+      }
 
-        fluidSim.style.filter=`
+      for (let key in windowParamsArray){
+        let param = windowParamsArray[key];
+        let valuesKey = `${key}`.replace('Parameter', '');
+        
+        param.value = valuesObj[valuesKey];
+      }
+    
+      for (let key in fluidParamsArray){
+        let param = fluidParamsArray[key];
+        let valuesKey = `${key}`.replace('Parameter', '');
+        
+        param.value = valuesObj[valuesKey];
+      }
+
+      editPanelContainer.style.backgroundColor = `${valuesObj.backgroundColor}14`;
+      document.body.style.setProperty('--containerBackgroundColor', `${valuesObj.backgroundColor}14`);
+      document.body.style.setProperty('--backdropBlur', `blur(${valuesObj.backgroundBlur}px)`);
+      document.body.style.setProperty('--inset1', `groove 5px ${valuesObj.insetColor}33`);
+      document.body.style.setProperty('--inset1sm', `groove 4px ${valuesObj.insetColor}33`);
+      document.body.style.setProperty('--soundcloudColor', `${valuesObj.soundcloudColor}deg`);
+      document.body.style.setProperty('--accentColor', `${valuesObj.accentColor}69`);
+      document.body.style.setProperty('--accentColorText', `${valuesObj.accentColor}`);
+      
+
+      fluidSim.style.filter=`
             drop-shadow(9px 9px ${valuesObj.fluidColor1}) 
             drop-shadow(27px 18px ${valuesObj.fluidColor2}) 
             drop-shadow(-9px 27px ${valuesObj.fluidColor3}) 
@@ -261,9 +439,8 @@
             brightness(${valuesObj.fluidBrightness}%) 
             blur(${valuesObj.fluidBlur}px) 
             opacity(${valuesObj.fluidOpacity}%)
+            invert(${valuesObj.fluidInvert})
             `
-
-        return
     }
 
 
@@ -272,6 +449,7 @@
         console.log('DONE')
         document.getElementById('editPanelContainer').style.backgroundColor = `${valuesObj.backgroundColor}`
         slidersInit();
+        updateAppearance();
     })
 </script>
 </div>

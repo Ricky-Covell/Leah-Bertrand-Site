@@ -86,10 +86,11 @@ performance1 = Performance(
     )
 
 appearance = Appearance(
-        border_color='#16006c91',
-        background_color='#c8c4ff14',
+        background_color='#c8c4ff',
         background_blur='6',
-        inset_color='#27305333',
+        inset_color='#273053',
+        soundcloud_color='50',
+        accent_color='#6d72ff',
         fluid_color_1='#ff803c',
         fluid_color_2='#ff008c',
         fluid_color_3='#ff9b19',
@@ -99,7 +100,8 @@ appearance = Appearance(
         fluid_grayscale='60',
         fluid_brightness='140',
         fluid_blur='5',
-        fluid_opacity='70'
+        fluid_opacity='70',
+        fluid_invert=False
  )
 
 admin = Admin(

@@ -276,11 +276,6 @@ class Appearance(db.Model):
         db.Integer,
         primary_key=True,
     )
-
-    border_color = db.Column(
-        db.Text,
-        nullable=False
-    )
     
     background_color = db.Column(
         db.Text,
@@ -293,6 +288,16 @@ class Appearance(db.Model):
     )
     
     inset_color = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    soundcloud_color = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    accent_color = db.Column(
         db.Text,
         nullable=False
     )
@@ -344,6 +349,11 @@ class Appearance(db.Model):
     
     fluid_opacity = db.Column(
         db.Integer,
+        nullable=False
+    )
+
+    fluid_invert = db.Column(
+        db.Boolean,
         nullable=False
     )
     

@@ -54,14 +54,14 @@ thing("Yo.");
 
 
 // **Ricky** Rate limited with setTimeout() to reduce CPU usaged
-var timesPerSecond = 10;
+var timesPerSecond = 100;
 var wait = false;
+let pressureMacro = 0.03;
+let velocityDec = 0.99;
 
     // ORIGINAL VALUES
 // let velocityMacro = 0.25
 // let velocityDec = 0.99
-let pressureMacro = 0.25;
-let velocityDec = 0.99;
 
 // if (!wait) {        
 //     wait = true;
@@ -465,13 +465,6 @@ let velocityDec = 0.99;
 
         //This requests the next animation frame which runs the draw() function again.
         requestAnimationFrame(draw);
-        if (!wait) {        
-            wait = flase;
-            // after a fraction of a second, allow events again
-            setTimeout(function () {
-                wait = false;
-            }, 1000 / timesPerSecond);
-        }
     }
 
   
@@ -615,7 +608,9 @@ let velocityDec = 0.99;
     this function when it's called.
     */
     function mouse_down_handler(e) {
-        // e.preventDefault(); //Prevents the default action from happening (e.g. navigation)
+        if (onEditPage !== true) {
+            e.preventDefault(); //Prevents the default action from happening (e.g. navigation)
+        }
         mouse.down = true; //Sets the mouse object's "down" value to true
     }
 
