@@ -6,7 +6,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from seed import seed_database
 
- from seed import seed_database
+from seed import seed_database
 from models import db, connect_db, Work, Performance, Admin, Appearance
 from forms import UserAddForm, LoginForm, EditForm
 
