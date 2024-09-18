@@ -14,7 +14,7 @@ CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
 
-if __name__ is '__main__':
+if __name__ == '__main__':
       app.run(host='0.0.0.0', port=10000)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
@@ -30,11 +30,11 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 
 #toolbar = DebugToolbarExtension(app)
 
+seed_database()
 
 app.app_context().push()
 connect_db(app)
 
-seed_database()
 
 # # # # # # # # # # # # # # # # BEFORE # # # # # # # # # # # # # # # # # # # # 
 @app.before_request
