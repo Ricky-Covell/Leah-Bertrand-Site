@@ -33,7 +33,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 app.app_context().push()
 connect_db(app)
 
-seed_database()
+#seed_database()
 
 
 # # # # # # # # # # # # # # # # BEFORE # # # # # # # # # # # # # # # # # # # # 
