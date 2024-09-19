@@ -14,11 +14,11 @@
 * For the convenience of the reviewer, a function has been added within app.py that logs the visitor in as an admin so that the editing page may be viewed. 
 
 ## Imgs
-#####Individual Work
+##### Individual Work
 ![](static/readmeImgs/readme1.png "Site")
-#####Edit Page
+##### Edit Page
 ![](static/readmeImgs/readme4.png "Site")
-#####Site After Edit
+##### Site After Edit
 ![](static/readmeImgs/readme2.png "Site")
 
 
@@ -36,7 +36,7 @@
 * Embedded audio works via Soundcloud Api
 
 
-##Future Improvements:
+## Future Improvements:
 
 * Currently reworking fluid simulator code for more efficient CPU usage which is currently quite high.
 
@@ -47,7 +47,7 @@
 * I was having some difficulty communicating between Javascript and Flask via Wtforms so some JS code is written within CSS files which isn't ideal.
 
 
-##  Built With:
+## Built With:
 
 * Python
 	* Flask  
@@ -60,6 +60,6 @@
 
 
 
-##Fluid Simulator Source Code:
+## Fluid Simulator Source Code:
 * The fluid simulator is a modification of the script found here: 
 	* https://codepen.io/aecend/pen/WbONyK
