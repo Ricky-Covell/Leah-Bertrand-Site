@@ -1,54 +1,3 @@
-/*
-Comments were requested, here we go :)
-
-Here's the rundown:
-
-This script creates a grid of cells and a separate layer of particles that
-float on top of the grid. Each cell of the grid holds X and Y velocity 
-(direction and magnitude) values and a pressure value. 
-
-Whenever the user holds down and moves their mouse over the canvas, the velocity 
-of the mouse is calculated and is used to influence the velocity and pressure in 
-each cell that was within the defined range of the mouse coordinates. Then, the 
-pressure change is communicated to all of the neighboring cells of those affected, 
-adjusting their velocity and pressure, and this is repeated over and over until
-the change propogates to all of the cells in the path of the direction of movement.
-
-The particles are randomly placed on the canvas and move according to the 
-velocity of the grid cells below, similar to grass seed floating on the surface 
-of water as it's moving. Whenever the particles move off the edge of the canvas,
-they are "dropped" back on to the canvas in a random position. The velocity, 
-however, is "wrapped" around to the opposite edge of the canvas. The slowing 
-down of the movement is simulated viscosity, which is basically frictional drag
-in the liquid.
-
-
-Let's get started:
---------
-
-This is a self-invoking function. Basically, that means that it runs itself 
-automatically. The reason for wrapping the script in this is to isolate the 
-majority of the variables that I define inside from the global scope and 
-only reveal specific functions and values. It looks like this:
-
-(function(argument) {
-
-    alert(argument);
-
-})("Yo.");
-
-and it does the same thing as this:
-
-function thing(argument) {
-
-    alert(argument);
-
-}
-
-thing("Yo.");
-
-*/
-
 // RATE LIMIT VIA THROTTLE requestanimationframe ?
     // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
 
@@ -78,12 +27,7 @@ let velocityDec = 0.99;
 (function(w) {
 
     var canvas, ctx;
-    
-    /* 
-    This is an associative array to hold the status of the mouse cursor
-    Whenever the mouse is moved or pressed, there are event handlers that
-    update the values in this array.
-    */
+
     var mouse = {
         x: 0,
         y: 0,
@@ -92,10 +36,6 @@ let velocityDec = 0.99;
         down: false
     };
 
-    /*
-    These are the variable definitions for the values that will be used 
-    throughout the rest of the script.
-    */
     let resNum = 100
     let penMult = 1
     // let resMult = resNum * 1
@@ -116,19 +56,11 @@ let velocityDec = 0.99;
     var vec_cells = []; //The array that will contain the grid cells
     var particles = []; //The array that will contain the particles
 
-
-    /*
-    This is the main function. It is triggered to start the process of constructing the
-    the grid and creating the particles, attaching event handlers, and starting the
-    animation loop.
-    */
     function init() {
         
-        //These lines get the canvas DOM element and canvas context, respectively.
         canvas = document.getElementById("c");
         ctx = canvas.getContext("2d");
 
-        //These two set the width and height of the canvas to the defined values.
         canvas.width = canvas_width;
         canvas.height = canvas_height;
 
@@ -154,13 +86,7 @@ let velocityDec = 0.99;
             //This loops through the count of rows.
             for (row = 0; row < num_rows; row++) { 
                 
-                /*
-                This line calls the cell() function, which creates an individual grid cell
-                and returns it as an object. The X and Y values are multiplied by the
-                resolution so that when the loops are referring to "column 2, row 2", the
-                width and height of "column 1, row 1" are counted in so that the top-left
-                corner of the new grid cell is at the bottom right of the other cell.
-                */
+            
                 var cell_data = new cell(col * resolution, row * resolution, resolution)
 
                 //This pushes the cell object into the grid array.
@@ -180,11 +106,6 @@ let velocityDec = 0.99;
         /*
         These loops move through the rows and columns of the grid array again and set variables 
         in each cell object that will hold the directional references to neighboring cells. 
-        For example, let's say the loop is currently on this cell:
-
-        OOOOO
-        OOOXO
-        OOOOO
         
         These variables will hold the references to neighboring cells so you only need to
         use "up" to refer to the cell above the one you're currently on.
@@ -202,16 +123,7 @@ let velocityDec = 0.99;
                 */
                 var cell_data = vec_cells[col][row];
 
-                /*
-                Each of these lines has a ternary expression. A ternary expression is similar 
-                to an if/then clause and is represented as an expression (e.g. row - 1 >= 0) 
-                which is evaluated to either true or false. If it's true, the first value after
-                the question mark is used, and if it's false, the second value is used instead.
 
-                If you're on the first row and you move to the row above, this wraps the row 
-                around to the last row. This is done so that momentum that is pushed to the edge 
-                of the canvas is "wrapped" to the opposite side.
-                */
                 var row_up = (row - 1 >= 0) ? row - 1 : num_rows - 1;
                 var col_left = (col - 1 >= 0) ? col - 1 : num_cols - 1;
                 var col_right = (col + 1 < num_cols) ? col + 1 : 0;
@@ -221,11 +133,7 @@ let velocityDec = 0.99;
                 var left = vec_cells[col_left][row];
                 var up_left = vec_cells[col_left][row_up];
                 var up_right = vec_cells[col_right][row_up];
-                
-                /*
-                Set the current cell's "up", "left", "up_left" and "up_right" attributes to the 
-                respective neighboring cells.
-                */
+
                 cell_data.up = up;
                 cell_data.left = left;
                 cell_data.up_left = up_left;
@@ -242,19 +150,6 @@ let velocityDec = 0.99;
             }
         }
 
-      
-        /*
-        These lines create triggers that fire when certain events happen. For
-        instance, when you move your mouse, the mouse_move_handler() function 
-        will run and will be passed the event object reference into it's "e" 
-        variable. Something to note, the mousemove event doesn't necessarily 
-        fire for *every* mouse coordinate position; the mouse movement is 
-        sampled at a certain rate, meaning that it's checked periodically, and 
-        if the mouse has moved, the event is fired and the current coordinates 
-        are sent. That's why you'll see large jumps from one pair of coordinates
-        to the next if you move your mouse very fast across the screen. That's
-        also how I measure the mouse's velocity.
-        */
         w.addEventListener("mousedown", mouse_down_handler);
         w.addEventListener("touchstart", touch_start_handler);
 
