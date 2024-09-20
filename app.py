@@ -22,19 +22,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
-app.config['HOST'] = '0.0.0.0'
-app.config['PORT'] = '10000'
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
-# app.config['SERVER_NAME'] = '0.0.0.0:10000'
+# app.config['HOST'] = '0.0.0.0'
+# app.config['PORT'] = '10000'
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 # toolbar = DebugToolbarExtension(app)
 
 app.app_context().push()
 connect_db(app)
 
-
-
-# print(Inspector.get_table_names)
 
 seed_database()
 
@@ -71,7 +67,7 @@ def do_logout():
 def auto_login():
     if not CURR_USER_KEY in session:
         admin = Admin.authenticate('Leah', 'Leah')
-        do_login(admin)
+        do_login(admin)     # Username&Password = Leah
 
 
 
@@ -122,18 +118,7 @@ def edit_work(work_id):
 
 
 
-
-
-
-
-
-
-
-
-                                            # # # # # # # # # # # # # # # # FUTURE UPDATES # # # # # # # # # # # # # # # # # # # # 
-
-
-# # # # # # # # # # # # # # # # ADMIN LOGIN # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # ADMIN ROUTES # # # # # # # # # # # # # # # # # # # # 
 @app.route('/login', methods=["GET", "POST"])
 def admin_login():
     """Handle admin login."""
@@ -203,7 +188,6 @@ def edit_site():
     return render_template('edit-site.html', works=works, form=form, appearances=appearances)
 
 
-# Username&Password = Leah
 
 
 
