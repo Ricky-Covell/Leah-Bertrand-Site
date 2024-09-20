@@ -33,7 +33,7 @@ toolbar = DebugToolbarExtension(app)
 app.app_context().push()
 connect_db(app)
 
-seed_database()
+# seed_database()
 
 
 # # # # # # # # # # # # # # # # BEFORE # # # # # # # # # # # # # # # # # # # # 
