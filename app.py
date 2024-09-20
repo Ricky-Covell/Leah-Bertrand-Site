@@ -13,8 +13,11 @@ from forms import UserAddForm, LoginForm, EditForm
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-     os.environ.get('DATABASE_URL', 'postgresql://leah_user:VMrcPl0kd06Lk703K1ohdmSayrI84T7D@dpg-cr9uu056l47c73cv32qg-a/leah'))
+# if __name__ == '__main__':
+    #   app.run(host='0.0.0.0', port=10000)
+
+# app.config['SQLALCHEMY_DATABASE_URI'] = (
+    #  os.environ.get('DATABASE_URL', 'postgresql://leah_user:VMrcPl0kd06Lk703K1ohdmSayrI84T7D@dpg-cr9uu056l47c73cv32qg-a/leah'))
     #  os.environ.get('DATABASE_URL', 'postgresql:///leah'))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -24,11 +27,11 @@ app.config['SQLALCHEMY_ECHO'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 app.config['SERVER_NAME'] = '0.0.0.0:10000'
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-
 # toolbar = DebugToolbarExtension(app)
 
 app.app_context().push()
 connect_db(app)
+
 
 
 # print(Inspector.get_table_names)
@@ -203,10 +206,6 @@ def edit_site():
 # Username&Password = Leah
 
 
-
-# # # # # # # # # # # # # # # # RUN # # # # # # # # # # # # # # # # # 
-# if __name__ == '__main__':
-    #   app.run(host='0.0.0.0', port=10000)
 
 
    
