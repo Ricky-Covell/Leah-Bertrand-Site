@@ -19,10 +19,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
-
-# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-
+# app.config['HOST'] = '0.0.0.0'
+# app.config['PORT'] = '10000'
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
+app.config['SERVER_NAME'] = os.environ.set('0.0.0.0:10000')
+# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 # toolbar = DebugToolbarExtension(app)
 
@@ -207,8 +208,8 @@ def edit_site():
 
 
 # # # # # # # # # # # # # # # # RUN # # # # # # # # # # # # # # # # # 
-if __name__ == '__main__':
-      app.run(host='0.0.0.0', port=10000)
+# if __name__ == '__main__':
+    #   app.run(host='0.0.0.0', port=10000)
 
 
    
