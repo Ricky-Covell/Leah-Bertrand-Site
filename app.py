@@ -10,29 +10,24 @@ from seed import seed_database
 from models import db, connect_db, Work, Performance, Admin, Appearance
 from forms import UserAddForm, LoginForm, EditForm
 
-def create_app():
-    app = Flask(__name__)
 
-    if __name__ == '__main__':
-          app.run(host='0.0.0.0', port=10000)
-    
-    
-    app.config['SQLALCHEMY_DATABASE_URI'] = (
-         os.environ.get('DATABASE_URL', 'postgresql://leah_user:VMrcPl0kd06Lk703K1ohdmSayrI84T7D@dpg-cr9uu056l47c73cv32qg-a/leah'))
-        #  os.environ.get('DATABASE_URL', 'postgresql:///leah'))
+app = Flask(__name__)
 
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+     os.environ.get('DATABASE_URL', 'postgresql://leah_user:VMrcPl0kd06Lk703K1ohdmSayrI84T7D@dpg-cr9uu056l47c73cv32qg-a/leah'))
+    #  os.environ.get('DATABASE_URL', 'postgresql:///leah'))
 
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ECHO'] = False
-    # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = False
 
-    # toolbar = DebugToolbarExtension(app)
+# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
-    app.app_context().push()
-    connect_db(app)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 
-    return app
+# toolbar = DebugToolbarExtension(app)
+
+app.app_context().push()
+connect_db(app)
 
 
 
@@ -211,6 +206,9 @@ def edit_site():
 
 
 
+# # # # # # # # # # # # # # # # RUN # # # # # # # # # # # # # # # # # 
+if __name__ == '__main__':
+      app.run(host='0.0.0.0', port=10000)
 
 
    
