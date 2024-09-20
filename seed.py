@@ -1,4 +1,5 @@
 from models import db, Work, Performance, Admin, Appearance
+from sqlalchemy import inspect
 
 def seed_database():
     db.drop_all()
@@ -111,6 +112,18 @@ def seed_database():
         
     db.session.add_all([work1, work2, work3, work4, performance1, admin, appearance])
     db.session.commit()
+
+
+
+def seed_db_if_empty():
+    inspector = inspect(db.engine)
+
+    if not inspector.has_table('admin'):
+        # with app.app_context():
+        print('Database is empty and has been seeded')
+        seed_database()
+    else:
+        print('Database has already been seeded.')
 
 
 

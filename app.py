@@ -4,9 +4,8 @@ import json
 from flask import Flask, render_template, jsonify, request, flash, redirect, session, url_for, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, NoSuchTableError
-from sqlalchemy.engine.reflection import Inspector
 
-from seed import seed_database
+from seed import seed_database, seed_db_if_empty
 from models import db, connect_db, Work, Performance, Admin, Appearance
 from forms import UserAddForm, LoginForm, EditForm
 
@@ -15,32 +14,27 @@ from forms import UserAddForm, LoginForm, EditForm
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
-     os.environ.get('DATABASE_URL', 'postgresql://leah_user:VMrcPl0kd06Lk703K1ohdmSayrI84T7D@dpg-cr9uu056l47c73cv32qg-a/leah'))
-    #  os.environ.get('DATABASE_URL', 'postgresql:///leah'))
+    #  os.environ.get('DATABASE_URL', 'postgresql://leah_user:VMrcPl0kd06Lk703K1ohdmSayrI84T7D@dpg-cr9uu056l47c73cv32qg-a/leah'))
+     os.environ.get('DATABASE_URL', 'postgresql:///leah'))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+
 toolbar = DebugToolbarExtension(app)
+CURR_USER_KEY = "curr_user"
 
 app.app_context().push()
 connect_db(app)
 
-
-# engine = sa.create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-inspector = Inspector.from_engine(db.get_engine)
-if not inspector.has_table("admin"):
-    with app.app_context():
-        seed_database()
-        app.logger.info('Database is empty and has been seeded')
-else:
-    app.logger.info('Database has already been seeded.')
+# reseeds when server is restarted
+db.drop_all()  
+seed_db_if_empty()
 
 # if __name__ == '__main__':
 #       app.run(host='0.0.0.0', port=10000)
 
-CURR_USER_KEY = "curr_user"
 
 # # # # # # # # # # # # # # # # BEFORE # # # # # # # # # # # # # # # # # # # # 
 @app.before_request

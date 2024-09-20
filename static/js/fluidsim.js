@@ -6,9 +6,9 @@
     let $results = $("#results");
     let fps, fpsInterval, startTime, now, then, elapsed;
     
-    let fpsGlobal = 16;
-    let pressureMacro = 0.4;    // ORIGINAL: 0.24
-    let velocityDec = 0.99;    // ORIGINAL: 0.99
+    let fpsGlobal = 15;
+    let pressureMacro = 0.05;    // ORIGINAL: 0.24
+    let velocityDec = 0.95;    // ORIGINAL: 0.99
 
 
 
