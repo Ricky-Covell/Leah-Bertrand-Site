@@ -21,8 +21,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-app.config['FLASK_RUN_HOST'] = os.environ.get('FLASK_RUN_HOST', '0.0.0.0')
-app.config['FLASK_RUN_PORT'] = os.environ.get('FLASK_RUN_PORT', '10000')
+# app.config['FLASK_RUN_HOST'] = os.environ.get('FLASK_RUN_HOST', '0.0.0.0')
+# app.config['FLASK_RUN_PORT'] = os.environ.get('FLASK_RUN_PORT', '10000')
 
 toolbar = DebugToolbarExtension(app)
 CURR_USER_KEY = "curr_user"
@@ -33,9 +33,6 @@ connect_db(app)
 # reseeds when server is restarted
 db.drop_all()  
 seed_db_if_empty()
-
-# if __name__ == '__main__':
-#       app.run(host='0.0.0.0', port=10000)
 
 
 # # # # # # # # # # # # # # # # BEFORE # # # # # # # # # # # # # # # # # # # # 
@@ -190,7 +187,8 @@ def edit_site():
     return render_template('edit-site.html', works=works, form=form, appearances=appearances)
 
 
-
+if __name__ == '__main__':
+      app.run(host='0.0.0.0', port=10000)
 
 
 
