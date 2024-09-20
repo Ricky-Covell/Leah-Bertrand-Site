@@ -19,8 +19,8 @@ app = Flask(__name__)
 CURR_USER_KEY = "curr_user"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
-    #  os.environ.get('DATABASE_URL', 'postgresql://leah_user:VMrcPl0kd06Lk703K1ohdmSayrI84T7D@dpg-cr9uu056l47c73cv32qg-a/leah'))
-     os.environ.get('DATABASE_URL', 'postgresql:///leah'))
+     os.environ.get('DATABASE_URL', 'postgresql://leah_user:VMrcPl0kd06Lk703K1ohdmSayrI84T7D@dpg-cr9uu056l47c73cv32qg-a/leah'))
+    #  os.environ.get('DATABASE_URL', 'postgresql:///leah'))
 
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -29,6 +29,7 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 
 toolbar = DebugToolbarExtension(app)
+
 
 app.app_context().push()
 connect_db(app)
