@@ -21,6 +21,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+app.config['FLASN_RUN_HOST'] = '0.0.0.0'
+app.config['FLASK_RUN_PORT'] = '10000'
 
 toolbar = DebugToolbarExtension(app)
 CURR_USER_KEY = "curr_user"
