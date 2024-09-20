@@ -27,7 +27,15 @@ toolbar = DebugToolbarExtension(app)
 app.app_context().push()
 connect_db(app)
 
-seed_database()
+
+# engine = sa.create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+inspector = Inspector.from_engine(db.get_engine)
+if not inspector.has_table("admin"):
+    with app.app_context():
+        seed_database()
+        app.logger.info('Database is empty and has been seeded')
+else:
+    app.logger.info('Database has already been seeded.')
 
 # if __name__ == '__main__':
 #       app.run(host='0.0.0.0', port=10000)

@@ -1,8 +1,10 @@
 from flask_bcrypt import Bcrypt
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, create_engine
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
+
+# db.creat
 
 def connect_db(app):
     """Connect this database to provided Flask app.
