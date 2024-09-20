@@ -32,6 +32,11 @@ toolbar = DebugToolbarExtension(app)
 app.app_context().push()
 connect_db(app)
 
+# db.dro
+
+db.drop_all()
+db.create_all()
+
 # seed_database()
 
 
