@@ -1,4 +1,3 @@
-# from app import app
 from models import db, Work, Performance, Admin, Appearance
 
 def seed_database():

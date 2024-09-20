@@ -1,9 +1,5 @@
-// RATE LIMIT VIA THROTTLE requestanimationframe ?
+// RATE LIMIT VIA requestanimationframe THROTTLE?
     // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
-
-
-
-
 
     let stop = false;
     let frameCount = 0;
@@ -11,73 +7,8 @@
     let fps, fpsInterval, startTime, now, then, elapsed;
     
     let fpsGlobal = 20;
-
-    
-    
-
-    
-    
-    // function animate() {
-    
-    //     // stop
-    //     if (stop) {
-    //         return;
-    //     }
-    
-    //     // request another frame
-    
-    //     requestAnimationFrame(animate);
-    
-    //     // calc elapsed time since last loop
-    
-    //     now = Date.now();
-    //     elapsed = now - then;
-    
-    //     // if enough time has elapsed, draw the next frame
-    
-    //     if (elapsed > fpsInterval) {
-    
-    //         // Get ready for next frame by setting then=now, but...
-    //         // Also, adjust for fpsInterval not being multiple of 16.67
-    //         then = now - (elapsed % fpsInterval);
-    
-    //         // draw stuff here
-    
-    
-
-
-    //         // TESTING...Report #seconds since start and achieved fps.
-    //         // var sinceStart = now - startTime;
-    //         // var currentFps = Math.round(1000 / (sinceStart / ++frameCount) * 100) / 100;
-    //     }
-    // }
-
-
-
-
-
-
-// **Ricky** Rate limited with setTimeout() to reduce CPU usaged   
-    // DIDNT WORK
-
-        var timesPerSecond = 100;
-        var wait = false;
-        let pressureMacro = 0.03;
-        let velocityDec = 0.99;
-
-            // ORIGINAL VALUES
-        // let velocityMacro = 0.25
-        // let velocityDec = 0.99
-
-        // if (!wait) {        
-        //     wait = true;
-        //     // after a fraction of a second, allow events again
-        //     setTimeout(function () {
-        //         wait = false;
-        //     }, 1000 / timesPerSecond);
-        // }
-
-
+    let pressureMacro = 0.4;    // ORIGINAL: 0.24
+    let velocityDec = 0.99;    // ORIGINAL: 0.99
 
 
 
@@ -102,7 +33,7 @@
         down: false
     };
 
-    let resNum = 100
+    let resNum = 80
     let penMult = 1
     // let resMult = resNum * 1
 
@@ -685,3 +616,31 @@ window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequ
 
 //And this line calls the init() function defined above to start the script.
 Fluid.initialize();
+
+
+
+
+
+
+
+
+
+// // // // // // TRASH // // // // // // 
+
+// **Ricky** Rate limited with setTimeout() to reduce CPU usaged   
+    // DIDNT WORK
+
+        // var timesPerSecond = 100;
+        // var wait = false;
+
+            // ORIGINAL VALUES
+        // let velocityMacro = 0.25
+        // let velocityDec = 0.99
+
+        // if (!wait) {        
+        //     wait = true;
+        //     // after a fraction of a second, allow events again
+        //     setTimeout(function () {
+        //         wait = false;
+        //     }, 1000 / timesPerSecond);
+        // }
