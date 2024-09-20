@@ -11,12 +11,8 @@ from models import db, connect_db, Work, Performance, Admin, Appearance
 from forms import UserAddForm, LoginForm, EditForm
 
 
-app = Flask(__name__)
 
-app.app_context().push()
-connect_db(app)
-# if __name__ == '__main__':
-    #   app.run(host='0.0.0.0', port=10000)
+app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
      os.environ.get('DATABASE_URL', 'postgresql://leah_user:VMrcPl0kd06Lk703K1ohdmSayrI84T7D@dpg-cr9uu056l47c73cv32qg-a/leah'))
@@ -25,13 +21,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
-# app.config['HOST'] = '0.0.0.0'
-# app.config['PORT'] = '10000'
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 # toolbar = DebugToolbarExtension(app)
 
 
+app.app_context().push()
+connect_db(app)
 
+if __name__ == '__main__':
+      app.run(host='0.0.0.0', port=10000)
 # seed_database()
 
 CURR_USER_KEY = "curr_user"
