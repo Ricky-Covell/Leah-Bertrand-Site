@@ -6,7 +6,7 @@
     let $results = $("#results");
     let fps, fpsInterval, startTime, now, then, elapsed;
     
-    let fpsGlobal = 20;
+    let fpsGlobal = 16;
     let pressureMacro = 0.4;    // ORIGINAL: 0.24
     let velocityDec = 0.99;    // ORIGINAL: 0.99
 
@@ -611,6 +611,8 @@
 Request animation frame polyfill. This enables you to use "requestAnimationFrame" 
 regardless of the browser the script is running in.
 */
+// window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
+
 window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
 
 
