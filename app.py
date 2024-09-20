@@ -28,8 +28,8 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
 app.app_context().push()
 connect_db(app)
 
-if __name__ == '__main__':
-      app.run(host='0.0.0.0', port=10000)
+# if __name__ == '__main__':
+#       app.run(host='0.0.0.0', port=10000)
 # seed_database()
 
 CURR_USER_KEY = "curr_user"
