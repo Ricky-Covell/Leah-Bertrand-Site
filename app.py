@@ -16,7 +16,6 @@ def create_app():
     if __name__ == '__main__':
           app.run(host='0.0.0.0', port=10000)
     
-    CURR_USER_KEY = "curr_user"
     
     app.config['SQLALCHEMY_DATABASE_URI'] = (
          os.environ.get('DATABASE_URL', 'postgresql://leah_user:VMrcPl0kd06Lk703K1ohdmSayrI84T7D@dpg-cr9uu056l47c73cv32qg-a/leah'))
@@ -33,11 +32,17 @@ def create_app():
     app.app_context().push()
     connect_db(app)
 
-    seed_database()
+    return app
+
+
+
 
 
 # print(Inspector.get_table_names)
 
+seed_database()
+
+CURR_USER_KEY = "curr_user"
 
 # # # # # # # # # # # # # # # # BEFORE # # # # # # # # # # # # # # # # # # # # 
 @app.before_request
