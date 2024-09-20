@@ -2,23 +2,80 @@
     // https://stackoverflow.com/questions/19764018/controlling-fps-with-requestanimationframe
 
 
-// **Ricky** Rate limited with setTimeout() to reduce CPU usaged
-var timesPerSecond = 100;
-var wait = false;
-let pressureMacro = 0.03;
-let velocityDec = 0.99;
 
-    // ORIGINAL VALUES
-// let velocityMacro = 0.25
-// let velocityDec = 0.99
 
-// if (!wait) {        
-//     wait = true;
-//     // after a fraction of a second, allow events again
-//     setTimeout(function () {
-//         wait = false;
-//     }, 1000 / timesPerSecond);
-// }
+
+    let stop = false;
+    let frameCount = 0;
+    let $results = $("#results");
+    let fps, fpsInterval, startTime, now, then, elapsed;
+    
+    let fpsGlobal = 20;
+
+    
+    
+
+    
+    
+    // function animate() {
+    
+    //     // stop
+    //     if (stop) {
+    //         return;
+    //     }
+    
+    //     // request another frame
+    
+    //     requestAnimationFrame(animate);
+    
+    //     // calc elapsed time since last loop
+    
+    //     now = Date.now();
+    //     elapsed = now - then;
+    
+    //     // if enough time has elapsed, draw the next frame
+    
+    //     if (elapsed > fpsInterval) {
+    
+    //         // Get ready for next frame by setting then=now, but...
+    //         // Also, adjust for fpsInterval not being multiple of 16.67
+    //         then = now - (elapsed % fpsInterval);
+    
+    //         // draw stuff here
+    
+    
+
+
+    //         // TESTING...Report #seconds since start and achieved fps.
+    //         // var sinceStart = now - startTime;
+    //         // var currentFps = Math.round(1000 / (sinceStart / ++frameCount) * 100) / 100;
+    //     }
+    // }
+
+
+
+
+
+
+// **Ricky** Rate limited with setTimeout() to reduce CPU usaged   
+    // DIDNT WORK
+
+        var timesPerSecond = 100;
+        var wait = false;
+        let pressureMacro = 0.03;
+        let velocityDec = 0.99;
+
+            // ORIGINAL VALUES
+        // let velocityMacro = 0.25
+        // let velocityDec = 0.99
+
+        // if (!wait) {        
+        //     wait = true;
+        //     // after a fraction of a second, allow events again
+        //     setTimeout(function () {
+        //         wait = false;
+        //     }, 1000 / timesPerSecond);
+        // }
 
 
 
@@ -26,9 +83,18 @@ let velocityDec = 0.99;
 
 (function(w) {
 
-    var canvas, ctx;
+    function startAnimating(fps) {
+        fpsInterval = 1000 / fps;
+        then = Date.now();
+        startTime = then;
+        console.log(startTime);
+        draw();
+    }    
 
-    var mouse = {
+
+    let canvas, ctx;
+
+    let mouse = {
         x: 0,
         y: 0,
         px: 0,
@@ -42,19 +108,19 @@ let velocityDec = 0.99;
 
     let vwidth = Math.ceil(Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)/resNum)*resNum  
     let vheight = Math.ceil(Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)/resNum)*resNum
-    var canvas_width = vwidth; //Needs to be a multiple of the resolution value below.
-    var canvas_height = vheight ; //This too.
+    let canvas_width = vwidth; //Needs to be a multiple of the resolution value below.
+    let canvas_height = vheight ; //This too.
     
-    var resolution = resNum; //Width and height of each cell in the grid.
+    let resolution = resNum; //Width and height of each cell in the grid.
     
-    var pen_size = resNum * penMult; //Radius around the mouse cursor coordinates to reach when stirring
+    let pen_size = resNum * penMult; //Radius around the mouse cursor coordinates to reach when stirring
 
-    var num_cols = canvas_width / resolution; //This value is the number of columns in the grid.
-    var num_rows = canvas_height / resolution; //This is number of rows.
+    let num_cols = canvas_width / resolution; //This value is the number of columns in the grid.
+    let num_rows = canvas_height / resolution; //This is number of rows.
     var speck_count = 100000; //This determines how many particles will be made.
     
-    var vec_cells = []; //The array that will contain the grid cells
-    var particles = []; //The array that will contain the particles
+    let vec_cells = []; //The array that will contain the grid cells
+    let particles = []; //The array that will contain the particles
 
     function init() {
         
@@ -121,18 +187,18 @@ let velocityDec = 0.99;
                 If the value in the array is changed, the value of this variable would change
                 also, and vice-versa.
                 */
-                var cell_data = vec_cells[col][row];
+                let cell_data = vec_cells[col][row];
 
 
-                var row_up = (row - 1 >= 0) ? row - 1 : num_rows - 1;
-                var col_left = (col - 1 >= 0) ? col - 1 : num_cols - 1;
-                var col_right = (col + 1 < num_cols) ? col + 1 : 0;
+                let row_up = (row - 1 >= 0) ? row - 1 : num_rows - 1;
+                let col_left = (col - 1 >= 0) ? col - 1 : num_cols - 1;
+                let col_right = (col + 1 < num_cols) ? col + 1 : 0;
 
                 //Get the reference to the cell on the row above.
-                var up = vec_cells[col][row_up];
-                var left = vec_cells[col_left][row];
-                var up_left = vec_cells[col_left][row_up];
-                var up_right = vec_cells[col_right][row_up];
+                let up = vec_cells[col][row_up];
+                let left = vec_cells[col_left][row];
+                let up_left = vec_cells[col_left][row_up];
+                let up_right = vec_cells[col_right][row_up];
 
                 cell_data.up = up;
                 cell_data.left = left;
@@ -160,8 +226,9 @@ let velocityDec = 0.99;
         canvas.addEventListener("touchmove", touch_move_handler);
 
         //When the page is finished loading, run the draw() function.
-        w.onload = draw;
+        // w.onload = draw;
 
+        startAnimating(fpsGlobal);
     }
 
   
@@ -175,7 +242,7 @@ let velocityDec = 0.99;
         for (i = 0; i < particles.length; i++) {
 
             //Sets this variable to the current particle so we can refer to the particle easier.
-            var p = particles[i];
+            let p = particles[i];
 
             //If the particle's X and Y coordinates are within the bounds of the canvas...
             if (p.x >= 0 && p.x < canvas_width && p.y >= 0 && p.y < canvas_height) {
@@ -184,11 +251,11 @@ let velocityDec = 0.99;
                 These lines divide the X and Y values by the size of each cell. This number is
                 then parsed to a whole number to determine which grid cell the particle is above.
                 */
-                var col = parseInt(p.x / resolution);
-                var row = parseInt(p.y / resolution);
+                let col = parseInt(p.x / resolution);
+                let row = parseInt(p.y / resolution);
 
                 //Same as above, store reference to cell
-                var cell_data = vec_cells[col][row];
+                let cell_data = vec_cells[col][row];
                 
                 /*
                 These values are percentages. They represent the percentage of the distance across
@@ -199,8 +266,8 @@ let velocityDec = 0.99;
                 coordinates by the resolution value. This number can only be smaller than the 
                 resolution, so we divide it by the resolution to get the percentage.
                 */
-                var ax = (p.x % resolution) / resolution;
-                var ay = (p.y % resolution) / resolution;
+                let ax = (p.x % resolution) / resolution;
+                let ay = (p.y % resolution) / resolution;
                 
                 /*
                 These lines subtract the decimal from 1 to reverse it (e.g. 100% - 75% = 25%), multiply 
@@ -229,14 +296,14 @@ let velocityDec = 0.99;
                 p.y += p.yv;
                 
                 //For each axis, this gets the distance between the old position of the particle and it's new position.
-                var dx = p.px - p.x;
-                var dy = p.py - p.y;
+                let dx = p.px - p.x;
+                let dy = p.py - p.y;
 
                 //Using the Pythagorean theorum (A^2 + B^2 = C^2), this determines the distance the particle travelled.
-                var dist = Math.sqrt(dx * dx + dy * dy);
+                let dist = Math.sqrt(dx * dx + dy * dy);
                 
                 //This line generates a random value between 0 and 0.5
-                var limit = Math.random() * 0.5;
+                let limit = Math.random() * 0.5;
                 
                 //If the distance the particle has travelled this frame is greater than the random value...
                 if (dist > limit) {
@@ -288,23 +355,49 @@ let velocityDec = 0.99;
     This is the main animation loop. It is run once from the init() function when the page is fully loaded and 
     uses RequestAnimationFrame to run itself again and again.
     */
-    function draw() {
+    function draw() {   
+        // stop
+        if (stop) {
+            return;
+        }
+    
+        requestAnimationFrame(draw);
+        // request another frame
+    
+        // requestAnimationFrame(draw);
+    
+        // calc elapsed time since last loop
+    
+        now = Date.now();
+        elapsed = now - then;
+    
+        // if enough time has elapsed, draw the next frame
+    
+        if (elapsed > fpsInterval) {
+    
+            // Get ready for next frame by setting then=now, but...
+            // Also, adjust for fpsInterval not being multiple of 16.67
+            then = now - (elapsed % fpsInterval);
+    
+            // draw stuff here
+
+
          /*
         This calculates the velocity of the mouse by getting the distance between the last coordinates and 
         the new ones. The coordinates will be further apart depending on how fast the mouse is moving.
         */
-        var mouse_xv = mouse.x - mouse.px;
-        var mouse_yv = mouse.y - mouse.py;
+        let mouse_xv = mouse.x - mouse.px;
+        let mouse_yv = mouse.y - mouse.py;
         
         //Loops through all of the columns
         for (i = 0; i < vec_cells.length; i++) {
-            var cell_datas = vec_cells[i];
+            let cell_datas = vec_cells[i];
 
             //Loops through all of the rows
             for (j = 0; j < cell_datas.length; j++) {
                 
                 //References the current cell
-                var cell_data = cell_datas[j];
+                let cell_data = cell_datas[j];
                 
                 //If the mouse button is down, updates the cell velocity using the mouse velocity
                 if (mouse.down) {
@@ -323,17 +416,6 @@ let velocityDec = 0.99;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
         //This sets the color to draw with.
-
-                // V1 Color
-        // ctx.strokeStyle = "#FF00AA";
-
-            // TURQUOISE
-        // ctx.strokeStyle = "#ffa500";
-
-            // GREENISH BLACK
-        // ctx.strokeStyle = "#fgb833";
-
-            // ?
         ctx.strokeStyle = "#FFEB9A";
 
         update_particle();                    
@@ -344,10 +426,10 @@ let velocityDec = 0.99;
         all of the rows and columns.
         */
         for (i = 0; i < vec_cells.length; i++) {
-            var cell_datas = vec_cells[i];
+            let cell_datas = vec_cells[i];
 
             for (j = 0; j < cell_datas.length; j++) {
-                var cell_data = cell_datas[j];
+                let cell_data = cell_datas[j];
 
                 update_velocity(cell_data);
 
@@ -359,7 +441,8 @@ let velocityDec = 0.99;
         mouse.py = mouse.y;
 
         //This requests the next animation frame which runs the draw() function again.
-        requestAnimationFrame(draw);
+        // requestAnimationFrame(draw);
+        }
     }
 
   
@@ -370,9 +453,9 @@ let velocityDec = 0.99;
     */
     function change_cell_velocity(cell_data, mvelX, mvelY, pen_size) {
         //This gets the distance between the cell and the mouse cursor.
-        var dx = cell_data.x - mouse.x;
-        var dy = cell_data.y - mouse.y;
-        var dist = Math.sqrt(dy * dy + dx * dx);
+        let dx = cell_data.x - mouse.x;
+        let dy = cell_data.y - mouse.y;
+        let dist = Math.sqrt(dy * dy + dx * dx);
         
         //If the distance is less than the radius...
         if (dist < pen_size) {
@@ -383,7 +466,7 @@ let velocityDec = 0.99;
             }
             
             //Calculate the magnitude of the mouse's effect (closer is stronger)
-            var power = pen_size / dist;
+            let power = pen_size / dist;
 
             /*
             Apply the velocity to the cell by multiplying the power by the mouse velocity and adding it to the cell velocity
@@ -401,7 +484,7 @@ let velocityDec = 0.99;
     function update_pressure(cell_data) {
 
         //This calculates the collective pressure on the X axis by summing the surrounding velocities
-        var pressure_x = (
+        let pressure_x = (
             cell_data.up_left.xv * 0.5 //Divided in half because it's diagonal
             + cell_data.left.xv
             + cell_data.down_left.xv * 0.5 //Same
@@ -411,7 +494,7 @@ let velocityDec = 0.99;
         );
         
         //This does the same for the Y axis.
-        var pressure_y = (
+        let pressure_y = (
             cell_data.up_left.yv * 0.5
             + cell_data.up.yv
             + cell_data.up_right.yv * 0.5
@@ -522,7 +605,7 @@ let velocityDec = 0.99;
 
         // don't handle events when one has just occurred
         
-        var rect = canvas.getBoundingClientRect();
+        let rect = canvas.getBoundingClientRect();
         mouse.x = mouse.px = e.touches[0].pageX - rect.left; //Set both previous and current coordinates
         mouse.y = mouse.py = e.touches[0].pageY - rect.top;
         mouse.down = true; //Sets the mouse object's "down" value to true
@@ -571,7 +654,7 @@ let velocityDec = 0.99;
             mouse.py = mouse.y;
     
             //This line gets the coordinates for where the canvas is positioned on the screen.
-            var rect = canvas.getBoundingClientRect();
+            let rect = canvas.getBoundingClientRect();
     
             /*
             And this sets the mouse coordinates to where the first touch is. Since we're using pageX
