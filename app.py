@@ -22,16 +22,13 @@ app.config['SQLALCHEMY_ECHO'] = False
 # app.config['HOST'] = '0.0.0.0'
 # app.config['PORT'] = '10000'
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
-app.config['SERVER_NAME'] = os.environ.set('0.0.0.0:10000')
+app.config['SERVER_NAME'] = '0.0.0.0:10000'
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 # toolbar = DebugToolbarExtension(app)
 
 app.app_context().push()
 connect_db(app)
-
-
-
 
 
 # print(Inspector.get_table_names)
