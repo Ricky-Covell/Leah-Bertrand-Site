@@ -9,7 +9,9 @@
     let fpsGlobal = 15;
     let pressureMacro = 0.05;    // ORIGINAL: 0.24
     let velocityDec = 0.95;    // ORIGINAL: 0.99
-
+    let resNum = 90
+    let penMult = 1
+    let speckCount = 100000;
 
 
 (function(w) {
@@ -33,8 +35,6 @@
         down: false
     };
 
-    let resNum = 80
-    let penMult = 1
     // let resMult = resNum * 1
 
     let vwidth = Math.ceil(Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)/resNum)*resNum  
@@ -48,7 +48,7 @@
 
     let num_cols = canvas_width / resolution; //This value is the number of columns in the grid.
     let num_rows = canvas_height / resolution; //This is number of rows.
-    var speck_count = 100000; //This determines how many particles will be made.
+    var speck_count = speckCount; //This determines how many particles will be made.
     
     let vec_cells = []; //The array that will contain the grid cells
     let particles = []; //The array that will contain the particles

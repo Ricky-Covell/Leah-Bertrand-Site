@@ -13,6 +13,8 @@
 
 * For the convenience of the reviewer, a function has been added within app.py that logs the visitor in as an admin so that the editing page may be viewed. 
 
+* The fluid simulator appears to not work well on some browsers. I am still working to understand cross browser compatibility. I recommend viewing the site on Google Chrome.
+
 ## Imgs
 ##### Individual Work
 ![](static/readmeImgs/readme1.png "Site")

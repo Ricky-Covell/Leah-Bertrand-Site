@@ -1,5 +1,7 @@
 /* GENERAL */
 
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
+
 :root {
     /* --containerBackgroundColor: rgba(232, 162, 255, 0.036); */
     /* --containerBorderColor: rgba(22, 0, 36, 0.28); */
@@ -499,9 +501,10 @@ canvas {
 #aboutContainer {
     z-index: 1000;
 } 
-                            /*                              FLUID SIM                                                           */
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
 
+
+
+                            /*                              FLUID SIM                                                           */
 
 canvas{
     --dsBase: 9px;
