@@ -30,8 +30,8 @@ CURR_USER_KEY = "curr_user"
 app.app_context().push()
 connect_db(app)
 
-# reseeds when server is restarted
-db.drop_all()  
+
+# db.drop_all()  # reseeds when server is restarted
 seed_db_if_empty()
 
 
